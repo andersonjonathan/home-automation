@@ -1,0 +1,63 @@
+{% extends 'application/master.html' %}
+{% load tags %}
+{% block content %}
+    {% for p in plugs %}
+        {% get_verbose_field_name p.child as verbose_name %}
+        {% if verbose_name != "Ir Device" and  verbose_name != "Kodi Device"  %}
+        <div class="desktop panel panel-default hidden-xs">
+            <div class="panel-body">
+                <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="Justified button group">
+                <span class="btn inline">{{ p.name }}</span>
+                    {% for button in p.buttons.all %}
+                    <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
+                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                    {% endfor %}
+                    {% if p.has_auto_mode %}
+                    <a href="javascript:void(0)" class="btn {% if p.in_auto_mode %}btn-primary active {% else %}btn-default{% endif %}" role="button"
+                        onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        <div class="mobile panel panel-default visible-xs-block">
+            <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
+            <div class="panel-body">
+                <div class="btn-group btn-group-lg" role="group" aria-label="Justified button group">
+                    {% for button in p.buttons.all %}
+                    <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
+                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                    {% endfor %}
+                    {% if p.has_auto_mode %}
+                    <a href="javascript:void(0)" class="btn {% if p.in_auto_mode %}btn-primary active {% else %}btn-default{% endif %}" role="button"
+                        onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        {% else %}
+            <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
+            <div class="panel-body">
+
+
+                {% for button_group in p.child.buttons_all %}
+                    <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+                    <div class="btn-group  btn-group-justified btn-group-lg" role="group" aria-label="Justified button group">
+                        {% for button in button_group %}
+                <a href="javascript:void(0)" class="btn {{ button.color }}" role="button"
+                   onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                            {% endfor %}
+                    </div>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

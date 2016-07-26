@@ -1,0 +1,65 @@
+# Remote control codes for 315MHz AK-RK01SX-220
+#
+# Remote A Black plastic
+# Remote A A: 101101010010101100101110S
+# Remote A B: 101101010010101100100111S
+# Remote A C: 101101010010101100101011S
+# Remote A D: 101101010010101100101101S
+#
+# Remote A Metal
+# Remote B A: 010110011011011111011110S
+# Remote B B: 010110011011011111011101S
+# Remote B C: 010110011011011111011011S
+# Remote B D: 010110011011011111010111S
+#
+# Remote C Black plastic
+# Remote C A: 001100011010101000001110S
+# Remote C B: 001100011010101000000111S
+# Remote C C: 001100011010101000001011S
+# Remote C D: 001100011010101000001101S
+#
+# Remote D Metal
+# Remote D A: 011111001010101111011110S
+# Remote D B: 011111001010101111011101S
+# Remote D C: 011111001010101111011011S
+# Remote D D: 011111001010101111010111S
+#
+# Packetformat
+# Every packet consists of 20 + 4 (total 24 logical data part bits) and is ended by a sync bit.
+# 0111 1100 1010 1011 1101 0111 S
+# HHHH HHHH HHHH HHHH HHHH BBBB S
+#
+# S = Sync bit.
+# H = The first 20 bits are transmitter unique codes.
+# B = Button
+# B (Plastic) = A (1110), B (0111), C (1011), D (1101)
+# B (Metalic) = A (1110), B (1101), C (1011), D (0111)
+#
+# '0' bit:
+#  ____________________
+# |                    |
+# |                    |
+# |                    |_____
+#
+# |--------------------|-----|
+#    4T                   T
+#
+# '1' bit:
+#  _____
+# |     |
+# |     |
+# |     |_________________________
+#
+# |-----|-------------------------|
+#    T               4T
+#
+# 'SYNC' bit:
+#  _____
+# |     |
+# |     |
+# |     |_______________________ . . . ____
+#
+# |-----|----------------------- . . . ----|
+#    T                40T
+#
+# T = 0.00026 s
