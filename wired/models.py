@@ -1,9 +1,10 @@
 from django.db import models
 
+from common.models import BaseDevice, BaseButton
 from .utils import set_state
 
 
-class Device(models.Model):
+class Device(BaseDevice):
     name = models.CharField(max_length=255)
     gpio = models.IntegerField(help_text="GPIO port", unique=True)
 
@@ -11,7 +12,7 @@ class Device(models.Model):
         return u'{name}'.format(name=self.name)
 
 
-class Button(models.Model):
+class Button(BaseButton):
     payload = models.CharField(max_length=1, choices=(("0", "0"), ("1", "1")))
     name = models.CharField(max_length=255)
     device = models.ForeignKey(Device, related_name='buttons')

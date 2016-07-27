@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'infrared',
     'kodi',
     'radio',
-    'schedules'
+    'schedules',
     'wired',
 )
 
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'home_automation.wsgi.common'
+WSGI_APPLICATION = 'home_automation.wsgi.application'
 
 
 # Database

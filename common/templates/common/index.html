@@ -1,9 +1,8 @@
-{% extends 'application/master.html' %}
+{% extends 'common/master.html' %}
 {% load tags %}
 {% block content %}
     {% for p in plugs %}
         {% get_verbose_field_name p.child as verbose_name %}
-        {% if verbose_name != "Ir Device" and  verbose_name != "Kodi Device"  %}
         <div class="desktop panel panel-default hidden-xs">
             <div class="panel-body">
                 <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="Justified button group">
@@ -17,7 +16,6 @@
                         onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
                     {% endif %}
                 </div>
-
             </div>
         </div>
         <div class="mobile panel panel-default visible-xs-block">
@@ -33,11 +31,12 @@
                         onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
                     {% endif %}
                 </div>
-
             </div>
         </div>
-        {% else %}
-            <div class="panel panel-default">
+    {% endfor %}
+
+    {% for p in remotes %}
+        <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
             <div class="panel-body">
 
@@ -58,6 +57,5 @@
                 {% endfor %}
             </div>
         </div>
-        {% endif %}
     {% endfor %}
 {% endblock %}

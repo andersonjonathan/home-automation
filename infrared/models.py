@@ -4,6 +4,8 @@ from subprocess import call
 
 from django.db import models
 
+from common.models import BaseDevice, BaseButton
+
 
 class Config(models.Model):
     name = models.CharField(max_length=255)
@@ -11,7 +13,7 @@ class Config(models.Model):
     key = models.CharField(max_length=255)
 
 
-class Device(models.Model):
+class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
 
     def button_grid(self):
@@ -32,7 +34,7 @@ class Device(models.Model):
         return res
 
 
-class Button(models.Model):
+class Button(BaseButton):
     name = models.CharField(max_length=255)
     config = models.ForeignKey(Config, related_name='buttons')
     device = models.ForeignKey(Device, related_name='buttons')

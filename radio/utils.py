@@ -1,7 +1,7 @@
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    from common import RPiMock as GPIO
+    from common.RPiMock import GPIO
 
 import time
 

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 from common.exceptions import UnknownCommand
+from common.models import BaseButton, BaseDevice
 from radio.utils import transmit
 
 
@@ -49,14 +50,14 @@ class RadioCode(models.Model):
         return self.protocol.time
 
 
-class Device(models.Model):
+class Device(BaseDevice):
     name = models.CharField(max_length=255)
 
     def __unicode__(self):
         return u'{name}'.format(name=self.name)
 
 
-class Button(models.Model):
+class Button(BaseButton):
     name = models.CharField(max_length=255)
     radio_code = models.ForeignKey(RadioCode, related_name='buttons')
     device = models.ForeignKey(Device, related_name='buttons')

@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 import requests
 from django.db import models
 
+from common.models import BaseDevice, BaseButton
 
-class Device(models.Model):
+
+class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
     host = models.CharField(max_length=16)
     port = models.CharField(max_length=16)
@@ -29,7 +31,7 @@ class Device(models.Model):
         return res
 
 
-class Button(models.Model):
+class Button(BaseButton):
     device = models.ForeignKey(Device, related_name='buttons')
     name = models.CharField(max_length=255)
     method = models.CharField(max_length=255)
