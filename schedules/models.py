@@ -3,11 +3,16 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 
+from common.models import BaseDevice, BaseButton
 from schedules.sun import sun
 
 
 class Schedule(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    active = models.BooleanField(default=True)
+    device = models.ManyToManyField(BaseDevice)
+    on = models.ManyToManyField(BaseButton, related_name="schedule_on")
+    off = models.ManyToManyField(BaseButton, related_name="schedule_off")
 
     def __unicode__(self):
         return u'{name}'.format(name=self.name)

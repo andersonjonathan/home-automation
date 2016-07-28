@@ -5,7 +5,7 @@
         {% get_verbose_field_name p.child as verbose_name %}
         <div class="desktop panel panel-default hidden-xs">
             <div class="panel-body">
-                <div class="btn-group btn-group-justified btn-group-lg" role="group" aria-label="Justified button group">
+                <div class="btn-group btn-group-justified btn-group-lg" role="group">
                 <span class="btn inline">{{ p.name }}</span>
                     {% for button in p.buttons.all %}
                     <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
@@ -21,7 +21,7 @@
         <div class="mobile panel panel-default visible-xs-block">
             <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
             <div class="panel-body">
-                <div class="btn-group btn-group-lg" role="group" aria-label="Justified button group">
+                <div class="btn-group btn-group-lg" role="group">
                     {% for button in p.buttons.all %}
                     <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
                        onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
@@ -40,15 +40,14 @@
             <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
             <div class="panel-body">
 
-
-                {% for button_group in p.child.buttons_all %}
+                {% for button_row in p.child.button_grid %}
                     <div class="row">
                     <div class="col-sm-1"></div>
                     <div class="col-sm-10">
-                    <div class="btn-group  btn-group-justified btn-group-lg" role="group" aria-label="Justified button group">
-                        {% for button in button_group %}
+                    <div class="btn-group  btn-group-justified btn-group-lg" role="group">
+                        {% for button in button_row %}
                 <a href="javascript:void(0)" class="btn {{ button.color }}" role="button"
-                   onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                   onclick="send_command(false, '', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
                             {% endfor %}
                     </div>
                     </div>

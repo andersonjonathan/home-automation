@@ -39,21 +39,24 @@ function init_csrf() {
 }
 function send_command(element, mode, url) {
     init_csrf();
+    if (element !== false) {
+        var $element = $(element);
+        var $parent = $($element.parent().get(0));
 
-    var $element = $(element);
-    var $parent = $($element.parent().get(0));
-
-    $parent.children('a').each(function () {
-        var child = $(this);
-        child.removeClass('active');
-        child.removeClass('btn-success');
-        child.removeClass('btn-danger');
-        child.removeClass('btn-primary');
-        child.addClass('btn-default');
-    });
-    $element.addClass('active');
-    $element.addClass(mode);
-    
+        $parent.children('a').each(function () {
+            var child = $(this);
+            child.removeClass('active');
+            child.removeClass('btn-default');
+            child.removeClass('btn-primary');
+            child.removeClass('btn-success');
+            child.removeClass('btn-info');
+            child.removeClass('btn-warning');
+            child.removeClass('btn-danger');
+            child.addClass('btn-default');
+        });
+        $element.addClass('active');
+        $element.addClass(mode);
+    }
 
     $.ajax({
         "type": "get",

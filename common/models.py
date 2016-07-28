@@ -4,18 +4,39 @@ from django.db import models
 
 
 class BaseDevice(models.Model):
+    @property
     def child(self):
-        if hasattr(self, 'radioplug'):
-            return self.radioplug
-        if hasattr(self, 'wiredplug'):
-            return self.wiredplug
-        if hasattr(self, 'irdevice'):
-            return self.irdevice
-        if hasattr(self, 'kodidevice'):
-            return self.kodidevice
+        if hasattr(self, 'radio'):
+            return self.radio
+        if hasattr(self, 'wired'):
+            return self.wired
+        if hasattr(self, 'infrared'):
+            return self.infrared
+        if hasattr(self, 'kodi'):
+            return self.kodi
+
+    def has_auto(self):
+        pass
+
+    def __unicode__(self):
+        return str(self.child)
 
 
 class BaseButton(models.Model):
+    @property
+    def child(self):
+        if hasattr(self, 'radio'):
+            return self.radio
+        if hasattr(self, 'wired'):
+            return self.wired
+        if hasattr(self, 'infrared'):
+            return self.infrared
+        if hasattr(self, 'kodi'):
+            return self.kodi
+
+    def __unicode__(self):
+        return str(self.child)
+
     def perform_action_internal(self):
         raise NotImplementedError("Please Implement this method")
 

@@ -12,6 +12,7 @@ class Device(BaseDevice):
     port = models.CharField(max_length=16)
     user = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
+    parent = models.OneToOneField(BaseDevice, related_name="kodi", parent_link=True)
 
     def button_grid(self):
         btns = self.buttons.all().order_by('row', 'priority')
@@ -25,10 +26,13 @@ class Device(BaseDevice):
                 row.append(b)
             else:
                 res.append(row)
-                row = []
+                row = [b]
                 prev_row = b.row
-
+        res.append(row)
         return res
+
+    def __unicode__(self):
+        return u'{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
@@ -45,6 +49,7 @@ class Button(BaseButton):
     ), default="btn-default")
     row = models.IntegerField(default=0)
     priority = models.IntegerField(default=0)
+    parent = models.OneToOneField(BaseButton, related_name="kodi", parent_link=True)
 
     class Meta:
         unique_together = (('name', 'device'),)

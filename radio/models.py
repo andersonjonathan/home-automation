@@ -52,6 +52,7 @@ class RadioCode(models.Model):
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
+    parent = models.OneToOneField(BaseDevice, related_name="radio", parent_link=True)
 
     def __unicode__(self):
         return u'{name}'.format(name=self.name)
@@ -72,6 +73,7 @@ class Button(BaseButton):
     ), default="btn-default")
     priority = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
+    parent = models.OneToOneField(BaseButton, related_name="radio", parent_link=True)
 
     class Meta:
         unique_together = (('name', 'device'),)

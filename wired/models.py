@@ -7,6 +7,7 @@ from .utils import set_state
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
     gpio = models.IntegerField(help_text="GPIO port", unique=True)
+    parent = models.OneToOneField(BaseDevice, related_name="wired", parent_link=True)
 
     def __unicode__(self):
         return u'{name}'.format(name=self.name)
@@ -26,6 +27,7 @@ class Button(BaseButton):
     ), default="btn-default")
     priority = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
+    parent = models.OneToOneField(BaseButton, related_name="wired", parent_link=True)
 
     def perform_action_internal(self):
         set_state(self.device.gpio, int(self.payload))

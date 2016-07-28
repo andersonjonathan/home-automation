@@ -15,6 +15,7 @@ class Config(models.Model):
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
+    parent = models.OneToOneField(BaseDevice, related_name="infrared", parent_link=True)
 
     def button_grid(self):
         btns = self.buttons.all().order_by('row', 'priority')
@@ -49,6 +50,7 @@ class Button(BaseButton):
     ), default="btn-default")
     row = models.IntegerField(default=0)
     priority = models.IntegerField(default=0)
+    parent = models.OneToOneField(BaseButton, related_name="infrared", parent_link=True)
 
     def __unicode__(self):
         return u'{name} [{plug}]'.format(name=self.name, plug=self.plug.name)

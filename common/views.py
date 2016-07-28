@@ -11,6 +11,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
 
+from common.models import BaseDevice, BaseButton
 from infrared.models import Device as IRDevice
 from kodi.models import Device as KodiDevice
 from radio.models import Device as RadioDevice
@@ -29,22 +30,11 @@ def index(request):
 
 @login_required
 def switch(request, pk, button_pk):
-    plug = Plug.objects.get(pk=pk).child()
+    device = BaseDevice.objects.get(pk=pk).child
 
     try:
-        if button_pk == "auto":
-            plug.in_auto_mode = True
-            plug.save()
-            for b in plug.buttons.all():
-                b.active = False
-                b.save()
-        else:
-            plug.in_auto_mode = False
-            plug.save()
-            btn = plug.buttons.get(pk=button_pk).child()
-            print(btn)
-            btn.perform_action()
-        # return JsonResponse({"status": "faulty command"})
+        btn = device.buttons.get(pk=button_pk).child
+        btn.perform_action()
     except KeyError:
         return JsonResponse({"status": "Exception."})
     return JsonResponse({"status": "ok"})
