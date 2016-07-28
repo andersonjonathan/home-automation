@@ -1,0 +1,152 @@
+KEY_UNKNOWN
+KEY_POWER
+--
+KEY_RECORD
+KEY_PLAY
+KEY_PAUSE
+KEY_STOP
+--
+KEY_PREVIOUS
+KEY_REWIND
+KEY_FORWARD
+KEY_NEXT
+--
+KEY_SCREEN
+KEY_LANGUAGE
+KEY_SUBTITLE
+KEY_WWW
+--
+KEY_RED
+KEY_GREEN
+KEY_YELLOW
+KEY_BLUE
+--
+KEY_1
+KEY_2
+KEY_3
+--
+KEY_4
+KEY_5
+KEY_6
+--
+KEY_7
+KEY_8
+KEY_9
+--
+KEY_TEXT
+KEY_0
+KEY_REFRESH
+--
+KEY_INFO
+KEY_SWITCHVIDEOMODE
+--
+KEY_CHANNELUP
+KEY_UP
+KEY_VOLUMEUP
+--
+KEY_LEFT
+KEY_OK
+KEY_RIGHT
+--
+KEY_CHANNELDOWN
+KEY_DOWN
+KEY_VOLUMEDOWN
+--
+KEY_MUTE
+KEY_MENU
+--
+KEY_ENTER
+KEY_FAVORITES
+KEY_SLEEP
+KEY_EPG
+--
+KEY_MEDIA
+KEY_SEARCH
+KEY_DISPLAYTOGGLE
+KEY_PRESENTATION
+
+  GNU nano 2.2.6                         File: lircd_tv.conf
+
+
+# Please make this file available to others
+# by sending it to <lirc@bartelmus.de>
+#
+# this config file was automatically generated
+# using lirc-0.9.0-pre1(default) on Wed Jul 13 20:01:30 2016
+#
+# contributed by
+#
+# brand:                       /home/pi/lircd_tv.conf
+# model no. of remote control:
+# devices being controlled by this remote:
+#
+
+begin remote
+
+  name  /home/pi/lircd_tv.conf
+  bits           13
+  flags RC5|CONST_LENGTH
+  eps            30
+  aeps          100
+
+  one           905   888
+  zero          905   888
+  plead         907
+  gap          114941
+  toggle_bit_mask 0x800
+
+      begin codes
+          KEY_POWER                0x104C
+          KEY_UNKNOWN              0x1057
+          KEY_RECORD               0x1073
+          KEY_PLAY                 0x1059
+          KEY_PAUSE                0x1071
+          KEY_STOP                 0x1058
+          KEY_PREVIOUS             0x105D
+          KEY_REWIND               0x105B
+          KEY_FORWARD              0x105C
+          KEY_NEXT                 0x105E
+          KEY_SCREEN               0x104B
+          KEY_LANGUAGE             0x104F
+          KEY_SUBTITLE             0x105F
+          KEY_WWW                  0x106E
+          KEY_RED                  0x1077
+          KEY_GREEN                0x1076
+          KEY_YELLOW               0x1072
+          KEY_BLUE                 0x1074
+          KEY_1                    0x1041
+          KEY_2                    0x1042
+          KEY_3                    0x1043
+          KEY_4                    0x1044
+          KEY_5                    0x1045
+          KEY_6                    0x1046
+          KEY_7                    0x1047
+          KEY_8                    0x1048
+          KEY_9                    0x1049
+          KEY_TEXT                 0x107C
+          KEY_0                    0x1040
+          KEY_REFRESH              0x1062
+          KEY_INFO                 0x1052
+          KEY_SWITCHVIDEOMODE      0x1078
+          KEY_CHANNELUP            0x1060
+          KEY_UP                   0x1054
+          KEY_VOLUMEUP             0x1050
+          KEY_LEFT                 0x1055
+          KEY_OK                   0x1075
+          KEY_RIGHT                0x1056
+          KEY_CHANNELDOWN          0x1061
+          KEY_DOWN                 0x1053
+          KEY_VOLUMEDOWN           0x1051
+          KEY_MUTE                 0x104D
+          KEY_MENU                 0x1070
+          KEY_ENTER                0x104A
+          KEY_FAVORITES            0x1068
+          KEY_SLEEP                0x106A
+          KEY_EPG                  0x106F
+          KEY_MEDIA                0x1079
+          KEY_SEARCH               0x105A
+          KEY_DISPLAYTOGGLE        0x107B
+          KEY_PRESENTATION         0x104E
+      end codes
+
+end remote

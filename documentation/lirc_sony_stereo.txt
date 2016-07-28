@@ -1,0 +1,76 @@
+KEY_SLEEP
+KEY_POWER
+--
+KEY_DISPLAYTOGGLE
+KEY_SELECT
+KEY_SETUP
+--
+KEY_MEMO
+KEY_MODE
+KEY_MEDIA_REPEAT
+--
+KEY_TAPE
+KEY_CD
+KEY_TUNER
+KEY_SWITCHVIDEOMODE
+--
+KEY_PREVIOUS
+KEY_NEXT
+KEY_REWIND
+KEY_FORWARD
+--
+KEY_PLAY
+KEY_PAUSE
+KEY_STOP
+--
+KEY_CLEAR
+KEY_VOLUMEUP
+KEY_ENTER
+--
+KEY_EQUAL
+KEY_EJECTCD
+--
+KEY_CHANNELDOWN
+KEY_VOLUMEDOWN
+KEY_CHANNELUP
+
+
+# Please make this file available to others
+# by sending it to <lirc@bartelmus.de>
+#
+# this config file was automatically generated
+# using lirc-0.9.0-pre1(default) on Wed Jul 13 20:56:18 2016
+#
+# contributed by
+#
+# brand:                       /home/pi/lircd_stereo_3.conf
+# model no. of remote control:
+# devices being controlled by this remote:
+#
+
+begin remote
+
+  name  /home/pi/lircd_stereo_3.conf
+  bits            4
+  flags SPACE_ENC|CONST_LENGTH
+  eps            30
+  aeps          100
+
+  header       2439   587
+  one          1224   581
+  zero          622   581
+  post_data_bits  16
+  post_data      0x4B9C
+  gap          45163
+  min_repeat      2
+#  suppress_repeat 2
+#  uncomment to suppress unwanted repeats
+  toggle_bit_mask 0x0
+
+      begin codes
+          KEY_1                    0x7
+          KEY_2                    0xF
+      end codes
+
+end remote
+
