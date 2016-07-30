@@ -48,7 +48,7 @@ def switch(request, pk, button_pk):
         return JsonResponse({"status": "ok"})
     try:
         btn = device.buttons.get(pk=button_pk).child
-        # btn.perform_action()
+        btn.perform_action()
         schedules = device.schedule_set.filter(active=True)
         for schedule in schedules:
             schedule.active = False
