@@ -11,8 +11,8 @@
                     <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
                        onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
                     {% endfor %}
-                    {% if p.has_auto_mode %}
-                    <a href="javascript:void(0)" class="btn {% if p.in_auto_mode %}btn-primary active {% else %}btn-default{% endif %}" role="button"
+                    {% if p.schedule_set.all %}
+                    <a href="javascript:void(0)" class="btn {% if p.schedule_set.all.0.active %}btn-primary active {% else %}btn-default{% endif %}" role="button"
                         onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
                     {% endif %}
                 </div>
@@ -26,8 +26,8 @@
                     <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
                        onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
                     {% endfor %}
-                    {% if p.has_auto_mode %}
-                    <a href="javascript:void(0)" class="btn {% if p.in_auto_mode %}btn-primary active {% else %}btn-default{% endif %}" role="button"
+                    {% if p.schedule_set.all %}
+                    <a href="javascript:void(0)" class="btn {% if p.schedule_set.all.0.active %}btn-primary active {% else %}btn-default{% endif %}" role="button"
                         onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
                     {% endif %}
                 </div>

@@ -19,30 +19,11 @@ class Schedule(models.Model):
 
     def active_slot(self):
         slots = self.scheduleslot_set.all()
-        status = None
         now = timezone.datetime.now().time()
         for slot in slots:
-            slot_status = None
-            if slot.start_mode == slot.TIME:
-                if now >= slot.start:
-                    slot_status = slot
-            elif slot.start_mode == slot.SUN_UP:
-                if now >= sun(58.41, 15.57).sunrise():
-                    slot_status = slot
-            elif slot.start_mode == slot.SUN_DOWN:
-                if now >= sun(58.41, 15.57).sunset():
-                    slot_status = slot
-            if slot_status:
-                if slot.end_mode == slot.TIME:
-                    if now <= slot.end:
-                        status = slot
-                elif slot.end_mode == slot.SUN_UP:
-                    if now <= sun(58.41, 15.57).sunrise():
-                        status = slot
-                elif slot.end_mode == slot.SUN_DOWN:
-                    if now <= sun(58.41, 15.57).sunset():
-                        status = slot
-        return status
+            if slot.start_time <= now <= slot.end_time:
+                return slot
+        return None
 
 
 class ScheduleSlot(models.Model):
@@ -67,5 +48,25 @@ class ScheduleSlot(models.Model):
     end = models.TimeField(null=True, blank=True)
     schedule = models.ForeignKey(Schedule)
 
+    @property
+    def start_time(self):
+        if self.start_mode == self.TIME:
+            return self.start
+        elif self.start_mode == self.SUN_UP:
+            return sun(58.41, 15.57).sunrise()
+        elif self.start_mode == self.SUN_DOWN:
+            return sun(58.41, 15.57).sunset()
+
+    @property
+    def end_time(self):
+        if self.end_mode == self.TIME:
+            return self.end
+        elif self.end_mode == self.SUN_UP:
+            return sun(58.41, 15.57).sunrise()
+        elif self.end_mode == self.SUN_DOWN:
+            return sun(58.41, 15.57).sunset()
+
     def __unicode__(self):
-        return u'{name}'.format(name=self.schedule.name)
+        return u'{start} ({start_style}) - {end} ({end_style})'.format(
+            start=self.start_time, end=self.end_time,
+            start_style=self.get_start_mode_display(), end_style=self.get_end_mode_display())
