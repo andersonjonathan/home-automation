@@ -49,6 +49,10 @@ class RadioCode(models.Model):
     def time(self):
         return self.protocol.time
 
+    def __unicode__(self):
+        return u'{protocol} - {name} [{transmitter}]'.format(
+            protocol=self.protocol, name=self.name, transmitter=self.transmitter)
+
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
