@@ -59,7 +59,7 @@ class Button(BaseButton):
         return u'{name} [{kodi}]'.format(name=self.name, kodi=self.device.name)
 
     def perform_action_internal(self, *args, **kwargs):
-        url = "http://{host}:{port}/jsonrpc".format(host=self.device.host, port=self.device.port)
+        url = "http://{host}:{port}/jsonrpc".format(host=self.device.child.host, port=self.device.child.port)
         payload = "{{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"{method}\"}}".format(method=self.method)
         headers = {
             'content-type': "common/json",
@@ -70,9 +70,9 @@ class Button(BaseButton):
             url,
             data=payload,
             headers=headers,
-            auth=(self.device.user, self.device.password)
+            auth=(self.device.child.user, self.device.child.password)
         )
-
+        print(response.text)
         return response.text
 
     def perform_action(self, *args, **kwargs):
