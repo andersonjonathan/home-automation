@@ -7,4 +7,4 @@ def get_verbose_field_name(instance):
     """
     Returns verbose_name for a field.
     """
-    return instance._meta.app_label + '_' + instance._meta.verbose_name
+    return str(instance._meta.app_label + '_' + instance._meta.verbose_name)

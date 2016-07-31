@@ -8,5 +8,5 @@ from .models import Group
 def group(request, group_name):
     context = {'current_page': group_name,
                'devices': Group.objects.get(name=group_name).devices.all(),
-               'plugs': ['radio_device', 'wired_device']}
+               'plugs': [str('radio_device'), str('wired_device')]}
     return render(request, 'device_group/index.html', context)
