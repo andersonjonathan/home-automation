@@ -9,7 +9,7 @@
                 <span class="btn inline">{{ p.name }}</span>
                     {% for button in p.buttons.all %}
                     <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
-                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
                     {% endfor %}
                     {% if p.schedule_set.all %}
                     <a href="javascript:void(0)" class="btn {% if p.schedule_set.all.0.active %}btn-primary active {% else %}btn-default{% endif %}" role="button"
@@ -24,7 +24,7 @@
                 <div class="btn-group btn-group-lg" role="group">
                     {% for button in p.buttons.all %}
                     <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
-                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
                     {% endfor %}
                     {% if p.schedule_set.all %}
                     <a href="javascript:void(0)" class="btn {% if p.schedule_set.all.0.active %}btn-primary active {% else %}btn-default{% endif %}" role="button"
@@ -47,7 +47,7 @@
                     <div class="btn-group  btn-group-justified btn-group-lg" role="group">
                         {% for button in button_row %}
                 <a href="javascript:void(0)" class="btn {{ button.color }}" role="button"
-                   onclick="send_command(false, '', '{% url 'switch' p.pk button.pk %}')">{{ button.name }}</a>
+                   onclick="send_command(false, '', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
                             {% endfor %}
                     </div>
                     </div>
