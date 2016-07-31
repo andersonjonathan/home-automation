@@ -32,9 +32,9 @@ class Device(BaseDevice):
                 row.append(b)
             else:
                 res.append(row)
-                row = []
+                row = [b]
                 prev_row = b.row
-
+        res.append(row)
         return res
 
     def __unicode__(self):
