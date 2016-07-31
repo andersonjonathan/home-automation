@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load device_group %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,6 +41,11 @@
         <li {% if current_page == 'Devices' %}class="active"{% endif %}><a href="{% url 'index' %}">
             Devices {% if current_page == 'Devices' %}<span class="sr-only">(current)</span>{% endif %}</a></li>
         <li {% if current_page == 'Schedule' %}class="active"{% endif %}><a href="{% url 'schedule' %}">Schedule {% if current_page == 'Schedule' %}<span class="sr-only">(current)</span>{% endif %}</a></li>
+      {% get_groups as groups %}
+      {% for group in groups %}
+          <li {% if current_page == group.name %}class="active"{% endif %}><a href="{{ group.get_absolute_url }}">
+            {{ group.name }} {% if current_page == group.name %}<span class="sr-only">(current)</span>{% endif %}</a></li>
+      {% endfor %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{% url "admin:index" %}">Admin</a></li>
