@@ -1,8 +1,8 @@
 {% extends 'common/master.html' %}
 {% load tags %}
 {% block content %}
-    {% for p in devices %}
-        {% with p.child as p %}
+    {% for d in devices %}
+        {% with d.child as p %}
         {% get_verbose_field_name p as verbose_name %}
         {% if verbose_name in plugs %}
         <div class="desktop panel panel-default hidden-xs">
