@@ -45,7 +45,7 @@ class Button(BaseButton):
     name = models.CharField(max_length=255)
     config = models.ForeignKey(Config, related_name='buttons')
     device = models.ForeignKey(Device, related_name='buttons')
-    count = models.IntegerField(default=10)
+    count = models.IntegerField(default=2)
     color = models.CharField(max_length=255, choices=(
         ("btn-default", "White"),
         ("btn-primary", "Blue"),
