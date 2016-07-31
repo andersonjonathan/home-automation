@@ -32,7 +32,7 @@ class Device(BaseDevice):
         return res
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
@@ -56,7 +56,7 @@ class Button(BaseButton):
         ordering = ["row", "priority"]
 
     def __unicode__(self):
-        return u'{name} [{kodi}]'.format(name=self.name, kodi=self.device.name)
+        return '{name} [{kodi}]'.format(name=self.name, kodi=self.device.name)
 
     def perform_action_internal(self, *args, **kwargs):
         url = "http://{host}:{port}/jsonrpc".format(host=self.device.child.host, port=self.device.child.port)

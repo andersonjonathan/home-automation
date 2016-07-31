@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.db import models
 
 from common.models import BaseDevice, BaseButton
@@ -10,7 +12,7 @@ class Device(BaseDevice):
     parent = models.OneToOneField(BaseDevice, related_name="wired", parent_link=True)
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
@@ -42,4 +44,4 @@ class Button(BaseButton):
         self.perform_action_internal()
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)

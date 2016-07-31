@@ -19,7 +19,7 @@ class BaseDevice(models.Model):
         pass
 
     def __unicode__(self):
-        return str(self.child)
+        return self.child.__unicode__()
 
 
 class BaseButton(models.Model):
@@ -35,7 +35,7 @@ class BaseButton(models.Model):
             return self.kodi
 
     def __unicode__(self):
-        return str(self.child)
+        return self.child.__unicode__()
 
     def perform_action_internal(self):
         raise NotImplementedError("Please Implement this method")

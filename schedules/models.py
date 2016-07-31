@@ -15,7 +15,7 @@ class Schedule(models.Model):
     off = models.ManyToManyField(BaseButton, related_name="schedule_off")
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)
 
     def active_slot(self):
         slots = self.scheduleslot_set.all()
@@ -67,6 +67,6 @@ class ScheduleSlot(models.Model):
             return sun(58.41, 15.57).sunset()
 
     def __unicode__(self):
-        return u'{start} ({start_style}) - {end} ({end_style})'.format(
+        return '{start} ({start_style}) - {end} ({end_style})'.format(
             start=self.start_time, end=self.end_time,
             start_style=self.get_start_mode_display(), end_style=self.get_end_mode_display())

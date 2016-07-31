@@ -12,7 +12,7 @@ class RadioTransmitter(models.Model):
     gpio = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)
 
 
 class RadioProtocol(models.Model):
@@ -20,7 +20,7 @@ class RadioProtocol(models.Model):
     time = models.FloatField(help_text="Period time t in seconds")
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)
 
 
 class RadioSignal(models.Model):
@@ -33,7 +33,7 @@ class RadioSignal(models.Model):
         unique_together = (('protocol', 'char'),)
 
     def __unicode__(self):
-        return u'{protocol} [{char}] [ON: {on}, OFF: {off}]'.format(
+        return '{protocol} [{char}] [ON: {on}, OFF: {off}]'.format(
             protocol=self.protocol, char=self.char, on=self.on, off=self.off)
 
 
@@ -50,7 +50,7 @@ class RadioCode(models.Model):
         return self.protocol.time
 
     def __unicode__(self):
-        return u'{protocol} - {name} [{transmitter}]'.format(
+        return '{protocol} - {name} [{transmitter}]'.format(
             protocol=self.protocol, name=self.name, transmitter=self.transmitter)
 
 
@@ -59,7 +59,7 @@ class Device(BaseDevice):
     parent = models.OneToOneField(BaseDevice, related_name="radio", parent_link=True)
 
     def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+        return '{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
@@ -84,7 +84,7 @@ class Button(BaseButton):
         ordering = ["priority"]
 
     def __unicode__(self):
-        return u'{name} [{device}]'.format(name=self.name, device=self.device.name)
+        return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def _format_payload(self, str_payload):
         str_payload = str_payload.replace(" ", "")

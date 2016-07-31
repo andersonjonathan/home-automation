@@ -13,7 +13,7 @@ class Config(models.Model):
     key = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return u'{name} [{remote}]'.format(name=self.name, remote=self.remote)
+        return '{name} [{remote}]'.format(name=self.name, remote=self.remote)
 
 
 class Device(BaseDevice):
@@ -59,7 +59,7 @@ class Button(BaseButton):
     parent = models.OneToOneField(BaseButton, related_name="infrared", parent_link=True)
 
     def __unicode__(self):
-        return u'{name} [{device}]'.format(name=self.name, device=self.device.name)
+        return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def perform_action_internal(self):
         call(['irsend', 'SEND_ONCE', self.config.remote, self.config.key, "--count={}".format(self.count)])
