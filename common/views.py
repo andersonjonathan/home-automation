@@ -16,7 +16,7 @@ from common.models import BaseDevice
 from infrared.models import Device as IRDevice
 from kodi.models import Device as KodiDevice
 from radio.models import Device as RadioDevice
-from schedules.models import Schedule
+
 from wired.models import Device as WiredDevice
 
 from django.http import JsonResponse

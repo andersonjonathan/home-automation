@@ -22,5 +22,3 @@ def output(sender, param):
     print("output sender", sender)
     print("output param", param)
     return None
-
-

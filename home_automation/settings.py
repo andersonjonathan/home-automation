@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'radio',
     'schedules',
     'wired',
-    'device_group'
+    'device_group',
+    'thermometer'
 )
 
 MIDDLEWARE_CLASSES = (

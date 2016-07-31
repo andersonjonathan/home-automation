@@ -29,3 +29,5 @@ Put the following in:
 ```
 */5 * * * * python /home/pi/rpi/Home_automation/manage.py checkschedule
 ```
+
+Install https://github.com/adafruit/Adafruit_Python_DHT

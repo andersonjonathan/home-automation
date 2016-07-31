@@ -1,0 +1,14 @@
+{% extends 'common/master.html' %}
+{% load thermometer %}
+{% block content %}
+    {% get_thermometers as thermometers %}
+    {% for t in thermometers %}
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">{{ t.name }}</h3></div>
+            <div class="panel-body">
+                Temperature: {% get_temperature t %}°C <br>
+                Humidity: {% get_humidity t %}%
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
