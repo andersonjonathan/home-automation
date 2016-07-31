@@ -62,7 +62,6 @@ class Button(BaseButton):
         url = "http://{host}:{port}/jsonrpc".format(host=self.device.child.host, port=self.device.child.port)
         payload = "{{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"{method}\"}}".format(method=self.method)
         headers = {
-            'content-type': "common/json",
             'cache-control': "no-cache",
         }
         response = requests.request(
@@ -72,7 +71,6 @@ class Button(BaseButton):
             headers=headers,
             auth=(self.device.child.user, self.device.child.password)
         )
-        print(response.text)
         return response.text
 
     def perform_action(self, *args, **kwargs):
