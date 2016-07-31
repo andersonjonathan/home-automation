@@ -62,7 +62,7 @@ class Button(BaseButton):
         return u'{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def perform_action_internal(self):
-        call(['irsend', 'SEND_ONCE', self.remote, self.key, "--count={}".format(self.count)])
+        call(['irsend', 'SEND_ONCE', self.config.remote, self.config.key, "--count={}".format(self.count)])
 
     def perform_action(self):
         self.perform_action_internal()
