@@ -59,7 +59,7 @@ class Button(BaseButton):
     parent = models.OneToOneField(BaseButton, related_name="infrared", parent_link=True)
 
     def __unicode__(self):
-        return u'{name} [{plug}]'.format(name=self.name, plug=self.plug.name)
+        return u'{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def perform_action_internal(self):
         call(['irsend', 'SEND_ONCE', self.remote, self.key, "--count={}".format(self.count)])
