@@ -12,6 +12,9 @@ class Config(models.Model):
     remote = models.CharField(max_length=255)
     key = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return u'{name} [{remote}]'.format(name=self.name, remote=self.remote)
+
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
@@ -33,6 +36,9 @@ class Device(BaseDevice):
                 prev_row = b.row
 
         return res
+
+    def __unicode__(self):
+        return u'{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
