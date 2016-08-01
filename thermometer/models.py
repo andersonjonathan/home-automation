@@ -22,3 +22,17 @@ class DHT11(models.Model):
 
     def __unicode__(self):
         return '{name}'.format(name=self.name)
+
+
+class CapacitorDevice(models.Model):
+    name = models.CharField(max_length=254)
+    gpio = models.IntegerField(help_text="GPIO port", unique=True)
+    a = models.FloatField(help_text="y=a*ln(x)+b")
+    b = models.FloatField(help_text="y=a*ln(x)+b")
+
+    @property
+    def value(self):
+        return self.read_capacitor(self.gpio, self.a, self.b)
+
+    def __unicode__(self):
+        return '{name}'.format(name=self.name)
