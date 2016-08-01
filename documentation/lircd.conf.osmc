@@ -1,0 +1,42 @@
+# Please make this file available to others
+# by sending it to <lirc@bartelmus.de>
+#
+# this config file was automatically generated
+# using lirc-0.9.0(default) on Sun Jul 31 22:15:42 2016
+#
+# contributed by
+#
+# brand:                       /home/jonathan/lircd_hdmi.conf
+# model no. of remote control:
+# devices being controlled by this remote:
+#
+
+begin remote
+
+  name  HDMI
+  bits           16
+  flags SPACE_ENC|CONST_LENGTH
+  eps            30
+  aeps          100
+
+  header       8988  4429
+  one           598  1613
+  zero          598   512
+  ptrail        613
+  repeat       8988  2213
+  pre_data_bits   16
+  pre_data       0xDF
+  gap          107322
+  toggle_bit_mask 0x0
+
+      begin codes
+          HDMI_POWER                0x40BF
+          HDMI_1                    0x10EF
+          HDMI_2                    0x50AF
+          HDMI_3                    0xB04F
+          HDMI_UP                   0x08F7
+          HDMI_DOWN                 0x48B7
+      end codes
+
+end remote
+
