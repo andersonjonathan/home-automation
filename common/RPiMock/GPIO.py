@@ -1,5 +1,11 @@
+import random
+import math
+
 OUT = "OUT"
 BCM = "BCM"
+IN = "IN"
+LOW = 0
+HIGH = 1
 
 
 def setmode(mode):
@@ -22,3 +28,8 @@ def output(sender, param):
     print("output sender", sender)
     print("output param", param)
     return None
+
+
+def input(RCpin):
+    print("output sender", RCpin)
+    return math.pow(random.randint(0, 1), 5)
