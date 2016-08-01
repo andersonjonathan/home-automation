@@ -1,6 +1,6 @@
 from django import template
 
-from ..models import DHT11, CapacitorDevice
+from ..models import DHT11, CapacitorDevice, W1Therm
 
 register = template.Library()
 
@@ -45,3 +45,8 @@ def get_capacitor_device_value_int(instance):
     Returns verbose_name for a field.
     """
     return int(instance.value)
+
+
+@register.assignment_tag()
+def get_w1_devices():
+    return W1Therm.objects.all()
