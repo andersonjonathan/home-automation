@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from utils import read_retry
+from utils import read_retry, read_capacitor
 
 
 class DHT11(models.Model):
@@ -29,10 +29,11 @@ class CapacitorDevice(models.Model):
     gpio = models.IntegerField(help_text="GPIO port", unique=True)
     a = models.FloatField(help_text="y=a*ln(x)+b")
     b = models.FloatField(help_text="y=a*ln(x)+b")
+    unit = models.CharField(max_length=254, null=True, blank=True)
 
     @property
     def value(self):
-        return self.read_capacitor(self.gpio, self.a, self.b)
+        return read_capacitor(self.gpio, self.a, self.b)
 
     def __unicode__(self):
         return '{name}'.format(name=self.name)

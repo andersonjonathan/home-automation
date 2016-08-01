@@ -36,4 +36,12 @@ def get_capacitor_device_value(instance):
     """
     Returns verbose_name for a field.
     """
-    return instance.temperature
+    return instance.value
+
+
+@register.simple_tag()
+def get_capacitor_device_value_int(instance):
+    """
+    Returns verbose_name for a field.
+    """
+    return int(instance.value)
