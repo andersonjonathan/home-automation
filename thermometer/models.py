@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from utils import read_retry, read_capacitor
+from utils import read_retry, read_capacitor, w1_read_temp
 
 
 class DHT11(models.Model):
@@ -37,3 +37,12 @@ class CapacitorDevice(models.Model):
 
     def __unicode__(self):
         return '{name}'.format(name=self.name)
+
+
+class W1Therm(models.Model):
+    name = models.CharField(max_length=254)
+    unit = models.CharField(max_length=254, null=True, blank=True)
+
+    @property
+    def temperature(self):
+        return w1_read_temp()
