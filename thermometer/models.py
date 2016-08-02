@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from utils import read_retry, read_capacitor, w1_read_temp
+from utils import read_retry, read_capacitor, w1_read_temp, read_capacitor_raw
 
 
 class DHT11(models.Model):
@@ -33,7 +33,13 @@ class CapacitorDevice(models.Model):
 
     @property
     def value(self):
+        if self.a == 0 and self.b == 0:
+            return self.value_raw
         return read_capacitor(self.gpio, self.a, self.b)
+
+    @property
+    def value_raw(self):
+        return read_capacitor_raw(self.gpio)
 
     def __unicode__(self):
         return '{name}'.format(name=self.name)
