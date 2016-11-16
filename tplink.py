@@ -37,5 +37,11 @@ def get_connected_devices():
         })
     return devices
 
+
+def get_global_ip():
+    p = Popen(['curl', 'http://ipinfo.io/ip'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate()
+    return output.strip()
+
 if __name__ == '__main__':
-    print(get_connected_devices())
+    print(get_global_ip())

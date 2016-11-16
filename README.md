@@ -31,3 +31,11 @@ Put the following in:
 ```
 
 Install https://github.com/adafruit/Adafruit_Python_DHT
+
+#TODO:
+* Connect to LoopiaAPI to show domains and automatically update DNS record to point to correct IP.
+* Add possibility to have different schedules on different week days.
+* Weather data from YR/SMHI
+* Graphical Scheduler
+* Light sensor
+* Motion Sensor
