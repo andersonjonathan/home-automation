@@ -5,3 +5,4 @@ pytz
 requests
 Adafruit-DHT==1.3.2
 RPi.GPIO
+dj-static
