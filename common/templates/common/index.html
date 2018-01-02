@@ -1,7 +1,6 @@
 {% extends 'common/master.html' %}
 {% load tags %}
 {% block content %}
-    {% for plugs in grouped_plugs %}
     <div class="row">
     {% for i in 'xx' %}
         <div class="col-6" style="padding-left: 0; padding-right: 0;">
@@ -89,7 +88,6 @@
         </div>
     {% endfor %}
     </div>
-    {% endfor %}
     {% for p in remotes %}
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>

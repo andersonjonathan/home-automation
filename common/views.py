@@ -25,19 +25,9 @@ from django.http import JsonResponse
 @login_required
 def index(request):
     plugs = sorted(list(RadioDevice.objects.all()) + list(WiredDevice.objects.all()) + list(ApiDevice.objects.all()), key=lambda x: (x.room is None, x.room.name if x.room else None))
-    grouped_plugs = []
-    name = None
-    tmp = []
-    for p in plugs:
-        if name == (p.room.name if p.room else ''):
-            tmp.append(p)
-        else:
-            tmp = [p]
-            name = p.room.name if p.room else ''
-            grouped_plugs.append(tmp)
     context = {'current_page': 'Devices',
                'remotes': list(IRDevice.objects.all()) + list(KodiDevice.objects.all()),
-               'grouped_plugs': grouped_plugs}
+               'plugs': plugs}
 
     return render(request, 'common/index.html', context)
 
@@ -46,9 +36,9 @@ def index(request):
 def room(request, room_name):
     context = {'current_page': room_name,
                'remotes': [],
-               'grouped_plugs': [list(RadioDevice.objects.filter(room__name=room_name)) +
+               'plugs': list(RadioDevice.objects.filter(room__name=room_name)) +
                         list(WiredDevice.objects.filter(room__name=room_name)) +
-                        list(ApiDevice.objects.filter(room__name=room_name))]}
+                        list(ApiDevice.objects.filter(room__name=room_name))}
     return render(request, 'common/index.html', context)
 
 
