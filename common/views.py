@@ -3,7 +3,6 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import FieldError
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, resolve_url
 from django.template.response import TemplateResponse
@@ -13,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
 
 from common.models import BaseDevice
+from api.models import Device as ApiDevice
 from infrared.models import Device as IRDevice
 from kodi.models import Device as KodiDevice
 from radio.models import Device as RadioDevice
@@ -24,43 +24,40 @@ from django.http import JsonResponse
 
 @login_required
 def index(request):
+    plugs = sorted(list(RadioDevice.objects.all()) + list(WiredDevice.objects.all()) + list(ApiDevice.objects.all()), key=lambda x: (x.room is None, x.room.name if x.room else None))
+    grouped_plugs = []
+    name = None
+    tmp = []
+    for p in plugs:
+        if name == (p.room.name if p.room else ''):
+            tmp.append(p)
+        else:
+            tmp = [p]
+            name = p.room.name if p.room else ''
+            grouped_plugs.append(tmp)
     context = {'current_page': 'Devices',
                'remotes': list(IRDevice.objects.all()) + list(KodiDevice.objects.all()),
-               'plugs': list(RadioDevice.objects.all()) + list(WiredDevice.objects.all())}
+               'grouped_plugs': grouped_plugs}
+
+    return render(request, 'common/index.html', context)
+
+
+@login_required
+def room(request, room_name):
+    context = {'current_page': room_name,
+               'remotes': [],
+               'grouped_plugs': [list(RadioDevice.objects.filter(room__name=room_name)) +
+                        list(WiredDevice.objects.filter(room__name=room_name)) +
+                        list(ApiDevice.objects.filter(room__name=room_name))]}
     return render(request, 'common/index.html', context)
 
 
 @login_required
 def switch(request, pk, button_pk):
     device = BaseDevice.objects.get(pk=pk).child
-    if button_pk == "auto":
-        try:
-            for btn in device.buttons.filter(active=True):
-                btn.active = False
-                btn.save()
-        except (FieldError, AttributeError):
-            pass
-
-        schedules = device.schedule_set.filter(active=False)
-        for schedule in schedules:
-            schedule.active = True
-            schedule.save()
-        return JsonResponse({"status": "ok"})
     try:
         btn = device.buttons.get(pk=button_pk).child
         btn.perform_action()
-        schedules = device.schedule_set.filter(active=True)
-        for schedule in schedules:
-            schedule.active = False
-            schedule.save()
-        try:
-            for b in device.buttons.filter(active=True):
-                b.active = False
-                b.save()
-            btn.active = True
-            btn.save()
-        except (FieldError, AttributeError):
-            pass
 
     except KeyError:
         return JsonResponse({"status": "Exception."})

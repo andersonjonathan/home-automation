@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = (
+    'flat_responsive',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,8 +44,9 @@ INSTALLED_APPS = (
     'radio',
     'schedules',
     'wired',
-    'device_group',
-    'thermometer'
+    'thermometer',
+    'api',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,3 +112,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+    )
+}

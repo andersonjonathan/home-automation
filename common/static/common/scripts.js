@@ -37,25 +37,25 @@ function init_csrf() {
         }
     });
 }
-function send_command(element, mode, url) {
+function send_command(element, url, color) {
     init_csrf();
     if (element !== false) {
         var $element = $(element);
         var $parent = $($element.parent().get(0));
 
+        var card = $($parent.parent().parent().get(0));
+        card.removeClass('border-default');
+        card.removeClass('border-primary');
+        card.removeClass('border-success');
+        card.removeClass('border-info');
+        card.removeClass('border-warning');
+        card.removeClass('border-danger');
+        card.addClass('border-' + color);
         $parent.children('a').each(function () {
             var child = $(this);
             child.removeClass('active');
-            child.removeClass('btn-default');
-            child.removeClass('btn-primary');
-            child.removeClass('btn-success');
-            child.removeClass('btn-info');
-            child.removeClass('btn-warning');
-            child.removeClass('btn-danger');
-            child.addClass('btn-default');
         });
         $element.addClass('active');
-        $element.addClass(mode);
     }
 
     $.ajax({
@@ -70,5 +70,4 @@ function send_command(element, mode, url) {
             }
         }
     });
-
 }

@@ -8,10 +8,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         schedules = Schedule.objects.filter(active=True)
         for schedule in schedules:
-            slot = schedule.active_slot()
-            if slot:
-                for btn in schedule.on.all():
-                    btn.child.perform_action_internal()
-            else:
-                for btn in schedule.off.all():
-                    btn.child.perform_action_internal()
+            schedule.check_schedule()

@@ -1,13 +1,13 @@
 from django import template
 
-from ..models import Group
+from ..models import Room
 
 register = template.Library()
 
 
 @register.assignment_tag()
-def get_groups():
+def get_rooms():
     """
     Returns verbose_name for a field.
     """
-    return Group.objects.all()
+    return Room.objects.all()

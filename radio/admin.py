@@ -10,13 +10,20 @@ class RadioButtonAdmin(admin.TabularInline):
 class DeviceAdmin(admin.ModelAdmin):
     model = Device
     inlines = [RadioButtonAdmin]
-    list_display = ('name',)
+    list_display = ('name', 'room')
     list_display_links = ('name',)
     search_fields = ['name']
 
 
 class RadioSignalAdmin(admin.TabularInline):
     model = RadioSignal
+
+
+class RadioCodeAdmin(admin.ModelAdmin):
+    model = RadioCode
+    list_display = ('name', 'payload', 'transmitter', 'protocol')
+    list_display_links = ('name',)
+    search_fields = ['name']
 
 
 class RadioProtocolAdmin(admin.ModelAdmin):
@@ -27,7 +34,8 @@ class RadioProtocolAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     search_fields = ['name']
 
+
 admin.site.register(RadioTransmitter)
-admin.site.register(RadioCode)
+admin.site.register(RadioCode, RadioCodeAdmin)
 admin.site.register(RadioProtocol, RadioProtocolAdmin)
 admin.site.register(Device, DeviceAdmin)

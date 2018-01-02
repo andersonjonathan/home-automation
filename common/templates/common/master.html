@@ -1,61 +1,67 @@
 {% load staticfiles %}
-{% load device_group %}
+{% load rooms %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Jonathans Home Automation</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <!-- Material Design for Bootstrap fonts and icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+        <link rel="stylesheet"
+              href="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/css/bootstrap-material-design.min.css"
+              integrity="sha384-R80DC0KVBO4GSTw+wZ5x2zn2pu4POSErBkf8/fSFhPXHxvHJydT0CSgAP2Yo2r4I" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static "common/style.css" %}">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <title>Jonathans Home Automation</title>
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static "common/style.css" %}">
-    <script src="{% static "common/scripts.js" %}"></script>
-</head>
-<body>
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{% url 'index' %}">Home Automation</a>
-    </div>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-light bg-light mb-2">
+            <a class="navbar-brand" href="{% url 'index' %}">Björkdala Automation</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li {% if current_page == 'Devices' %}class="active"{% endif %}><a href="{% url 'index' %}">
-            Devices {% if current_page == 'Devices' %}<span class="sr-only">(current)</span>{% endif %}</a></li>
-        <li {% if current_page == 'Schedule' %}class="active"{% endif %}><a href="{% url 'schedule' %}">Schedule {% if current_page == 'Schedule' %}<span class="sr-only">(current)</span>{% endif %}</a></li>
-      {% get_groups as groups %}
-      {% for group in groups %}
-          <li {% if current_page == group.name %}class="active"{% endif %}><a href="{{ group.get_absolute_url }}">
-            {{ group.name }} {% if current_page == group.name %}<span class="sr-only">(current)</span>{% endif %}</a></li>
-      {% endfor %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li {% if current_page == 'Thermometers' %}class="active"{% endif %}><a href="{% url "thermometers" %}">Thermometers {% if current_page == 'Thermometers' %}<span class="sr-only">(current)</span>{% endif %}</a></li>
-          <li><a href="{% url "admin:index" %}">Admin</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-<div class="container">
-    {% block content %}{% endblock %}
-</div>
-</body>
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% if current_page == 'Devices' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'index' %}">Alla enheter</a></li>
+
+                    {% get_rooms as rooms %}
+                    {% for room in rooms %}
+                        <li class="nav-item {% if current_page == room.name %}active{% endif %}">
+                            <a class="nav-link" href="{{ room.get_absolute_url }}">{{ room.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                <ul class="navbar-nav navbar-right">
+                    <li class="nav-item {% if current_page == 'Thermometers' %}active{% endif %}">
+                        <a class="nav-link" href="{% url "thermometers" %}">Termometer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url "admin:index" %}">Admin</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+                integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+                crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/js/bootstrap-material-design.js"
+                integrity="sha384-3xciOSDAlaXneEmyOo0ME/2grfpqzhhTcM4cE32Ce9+8DW/04AGoTACzQpphYGYe"
+                crossorigin="anonymous"></script>
+        <script src="{% static "common/scripts.js" %}"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+        <script>$(document).ready(function () {
+            $('body').bootstrapMaterialDesign();
+        });</script>
+    </body>
 </html>

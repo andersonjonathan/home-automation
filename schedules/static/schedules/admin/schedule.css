@@ -1,0 +1,104 @@
+@media (min-width: 900px){
+div.form-row.field-monday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-monday > div {
+    display: inline;
+}
+div.form-row.field-monday > div > label {
+    width: auto;
+}
+
+div.form-row.field-tuesday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-tuesday > div {
+    display: inline;
+}
+div.form-row.field-tuesday > div > label {
+    width: auto;
+}
+
+div.form-row.field-wednesday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-wednesday > div {
+    display: inline;
+}
+div.form-row.field-wednesday > div > label {
+    width: auto;
+}
+
+div.form-row.field-thursday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-thursday > div {
+    display: inline;
+}
+div.form-row.field-thursday > div > label {
+    width: auto;
+}
+
+div.form-row.field-friday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-friday > div {
+    display: inline;
+}
+div.form-row.field-friday > div > label {
+    width: auto;
+}
+
+div.form-row.field-saturday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-saturday > div {
+    display: inline;
+}
+div.form-row.field-saturday > div > label {
+    width: auto;
+}
+
+div.form-row.field-sunday {
+    display: inline;
+    border-bottom: none;
+}
+div.form-row.field-sunday > div {
+    display: inline;
+}
+div.form-row.field-sunday > div > label {
+    width: auto;
+}
+div.form-row.field-monday::before {
+    content: " ";
+    display: block;
+    height: 1px;
+    width: 100%;
+    margin-top: -12px;
+    margin-bottom: 0px;
+}
+div.form-row.field-monday > div::before {
+    content: "Days:";
+    display: inline-block;
+    font-weight: bold;
+    color: #333;
+    font-size: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 160px;
+}
+div.form-row.field-sunday::after {
+    content: " ";
+    display: block;
+    height: 1px;
+    background: #f0f0f0;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}}

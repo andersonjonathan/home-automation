@@ -1,9 +1,12 @@
 from django.contrib import admin
-from .models import Device, Button
+
+# Register your models here.
+from .models import Button, Device
 
 
-class ButtonAdmin(admin.TabularInline):
+class ButtonAdmin(admin.StackedInline):
     model = Button
+    extra = 0
 
 
 class DeviceAdmin(admin.ModelAdmin):
@@ -13,6 +16,5 @@ class DeviceAdmin(admin.ModelAdmin):
     list_display = ('name', 'room')
     list_display_links = ('name',)
     search_fields = ['name']
-
 
 admin.site.register(Device, DeviceAdmin)

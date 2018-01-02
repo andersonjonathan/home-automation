@@ -1,40 +1,95 @@
 {% extends 'common/master.html' %}
 {% load tags %}
 {% block content %}
-    {% for p in plugs %}
-        {% get_verbose_field_name p.child as verbose_name %}
-        <div class="desktop panel panel-default hidden-xs">
-            <div class="panel-body">
-                <div class="btn-group btn-group-justified btn-group-lg" role="group">
-                <span class="btn inline">{{ p.name }}</span>
-                    {% for button in p.buttons.all %}
-                    <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
-                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
-                    {% endfor %}
-                    {% if p.schedule_set.all %}
-                    <a href="javascript:void(0)" class="btn {% if p.schedule_set.all.0.active %}btn-primary active {% else %}btn-default{% endif %}" role="button"
-                        onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
-                    {% endif %}
+    {% for plugs in grouped_plugs %}
+    <div class="row">
+    {% for i in 'xx' %}
+        <div class="col-6" style="padding-left: 0; padding-right: 0;">
+            {% for p in plugs %}
+                {% get_verbose_field_name p.child as verbose_name %}
+                {% if forloop.counter0|add:forloop.parentloop.counter0|divisibleby:2 %}
+                <div style="padding-left: 5px; padding-right: 5px; padding-bottom: 10px">
+                    <div class="card w-100 {% for button in p.buttons.all %}{% if button.active %}border border-{{ button.color }}{% endif %}{% endfor %}">
+                        <div class="card-body" style="padding: 0.5rem;">
+                            <h4 class="card-title">{{ p.name }}</h4>
+
+                            {% if p.room %}
+                                <h6 class="card-subtitle mb-2 text-muted">{{ p.room.name }}</h6>{% endif %}
+                            <div class="text-center" role="group">
+                                {% for button in p.buttons.all %}
+                                    <a href="javascript:void(0)"
+                                       class="btn btn-outline-{{ button.color }} {% if button.manually_active %}active{% endif %}"
+                                       style="
+                                        padding-top: 0.30rem;
+                                        padding-right: 0.6rem;
+                                        padding-bottom: 0.30rem;
+                                        padding-left: 0.6rem;
+                                        margin: 0.30rem 0;"
+                                       role="button"
+                                       onclick="send_command(this, '{% url 'switch' p.pk button.pk %}', '{{ button.color }}')">{{ button.name|safe }}</a>
+                                {% endfor %}
+                                <button type="button"
+                                        style="
+                                         padding-top: 0.30rem;
+                                         padding-right: 0.6rem;
+                                         padding-bottom: 0.30rem;
+                                         padding-left: 0.6rem;
+                                         margin: 0.30rem 0;
+                                         {% if not p.schedule.all or not p.schedule.all.0.active %}opacity: 0.3;{% endif %}
+                                         "
+                                        class="btn btn-outline-info"
+                                        data-toggle="modal" data-target="#schedule-editor-{{ p.id }}"><i
+                                        class="far fa-clock"></i></button>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="mobile panel panel-default visible-xs-block">
-            <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
-            <div class="panel-body">
-                <div class="btn-group btn-group-lg" role="group">
-                    {% for button in p.buttons.all %}
-                    <a href="javascript:void(0)" class="btn {% if button.active %}{{ button.color }} active {% else %}btn-default{% endif %}" role="button"
-                       onclick="send_command(this, '{{ button.color }}', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
-                    {% endfor %}
-                    {% if p.schedule_set.all %}
-                    <a href="javascript:void(0)" class="btn {% if p.schedule_set.all.0.active %}btn-primary active {% else %}btn-default{% endif %}" role="button"
-                        onclick="send_command(this, 'btn-primary', '{% url 'switch' p.pk 'auto' %}')">AUTO</a>
-                    {% endif %}
+                {% endif %}
+
+                <!-- schedule editor -->
+                <div class="modal fade" id="schedule-editor-{{ p.id }}" tabindex="-1" role="dialog"
+                     aria-labelledby="schedule-editor-label-{{ p.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="schedule-editor-label-{{ p.id }}">Schema</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% for s in p.schedule.all %}
+                                    <h3 class="panel-title">{{ p.name }}</h3>
+                                    <b>Signaler:</b> {% if s.repeat_signal %}Var 5:e minut{% else %}En gång{% endif %}<br>
+                                    <b>Tidsspan</b> <i>(på)</i><br>
+                                    <hr class="small">
+                                    {% for slot in s.scheduleslot_set.all %}
+                                        {{ slot.times }}<br>
+                                        [{{ slot.days }}]<br>
+                                        {{ slot.current_setting }}
+                                        <br><hr class="small">
+                                    {% endfor %}
+                                {% empty %}
+                                    Inget schema för denna enhet
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                                {% if p.schedule.all %}
+                                    <a href="{% url 'admin:schedules_schedule_change' p.schedule.all.0.id %}" class="btn btn-primary">Ändra Schema</a>
+                                {% else %}
+                                    <a href="{% url 'admin:schedules_schedule_add' %}?device={{ p.pk }}" class="btn btn-primary">Skapa schema</a>
+                                {% endif %}
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Stäng</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
     {% endfor %}
-
+    </div>
+    {% endfor %}
     {% for p in remotes %}
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">{{ p.name }}</h3></div>
@@ -42,16 +97,16 @@
 
                 {% for button_row in p.child.button_grid %}
                     <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10">
-                    <div class="btn-group  btn-group-justified btn-group-lg" role="group">
-                        {% for button in button_row %}
-                <a href="javascript:void(0)" class="btn {{ button.color }}" role="button"
-                   onclick="send_command(false, '', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
-                            {% endfor %}
-                    </div>
-                    </div>
-                    <div class="col-sm-1"></div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <div class="btn-group  btn-group-justified btn-group-lg" role="group">
+                                {% for button in button_row %}
+                                    <a href="javascript:void(0)" class="btn {{ button.color }}" role="button"
+                                       onclick="send_command(false, '', '{% url 'switch' p.pk button.pk %}')">{{ button.name|safe }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-1"></div>
                     </div>
                 {% endfor %}
             </div>

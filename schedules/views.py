@@ -1,12 +1,16 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import JsonResponse
 
-# Create your views here.
-from schedules.models import Schedule
+from common.models import BaseDevice
 
 
 @login_required
-def schedule(request):
-    context = {'current_page': 'Schedule',
-               'schedules': Schedule.objects.all()}
-    return render(request, 'schedules/schedule.html', context)
+def buttons(request, device_pk):
+    device = BaseDevice.objects.get(pk=device_pk).child
+    btns = []
+    for b in device.buttons.all():
+        btns.append({
+            'optionValue': b.pk,
+            'optionDisplay': unicode(b)
+        })
+    return JsonResponse({'status': 'ok', 'buttons': btns})

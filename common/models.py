@@ -1,6 +1,17 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.urlresolvers import reverse
+
+
+class Room(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('room', args=[self.name])
 
 
 class BaseDevice(models.Model):
@@ -14,6 +25,8 @@ class BaseDevice(models.Model):
             return self.infrared
         if hasattr(self, 'kodi'):
             return self.kodi
+        if hasattr(self, 'api'):
+            return self.api
 
     def has_auto(self):
         pass
@@ -33,6 +46,8 @@ class BaseButton(models.Model):
             return self.infrared
         if hasattr(self, 'kodi'):
             return self.kodi
+        if hasattr(self, 'api'):
+            return self.api
 
     def __unicode__(self):
         return self.child.__unicode__()

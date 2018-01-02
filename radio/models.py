@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 from common.exceptions import UnknownCommand
-from common.models import BaseButton, BaseDevice
+from common.models import BaseButton, BaseDevice, Room
 from radio.utils import transmit
 
 
@@ -56,10 +56,11 @@ class RadioCode(models.Model):
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
+    room = models.ForeignKey(Room, null=True, blank=True, related_name='radio')
     parent = models.OneToOneField(BaseDevice, related_name="radio", parent_link=True)
 
     def __unicode__(self):
-        return '{name}'.format(name=self.name)
+        return '{name}{room}'.format(name=self.name, room=', ' + self.room.name if self.room else '')
 
 
 class Button(BaseButton):
@@ -68,15 +69,16 @@ class Button(BaseButton):
     device = models.ForeignKey(Device, related_name='buttons')
     rounds = models.IntegerField(default=10)
     color = models.CharField(max_length=255, choices=(
-        ("btn-default", "White"),
-        ("btn-primary", "Blue"),
-        ("btn-success", "Green"),
-        ("btn-info", "Light blue"),
-        ("btn-warning", "Orange"),
-        ("btn-danger", "Red"),
-    ), default="btn-default")
+        ("default", "White"),
+        ("primary", "Blue"),
+        ("success", "Green"),
+        ("info", "Light blue"),
+        ("warning", "Orange"),
+        ("danger", "Red"),
+    ), default="default")
     priority = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
+    manually_active = models.BooleanField(default=False)
     parent = models.OneToOneField(BaseButton, related_name="radio", parent_link=True)
 
     class Meta:
@@ -111,15 +113,23 @@ class Button(BaseButton):
                 raise UnknownCommand()
         return payload
 
-    def perform_action_internal(self):
+    def perform_action_internal(self, manually=False):
+        self.active = True
+        self.manually_active = manually
+        for b in self.device.buttons.all():
+            if b.name != self.name:
+                b.active = False
+                b.manually_active = False
+                b.save()
+        self.save()
         payload = self._format_payload(self.radio_code.payload)
         transmit(payload, self.radio_code.transmitter.gpio, self.rounds)
 
     def perform_action(self):
-        self.active = True
-        for b in self.device.buttons.all():
-            if b.name != self.name:
-                b.active = False
-                b.save()
-        self.save()
-        self.perform_action_internal()
+        for s in self.schedule_off.all():
+            s.disable_until = s.get_state()['end']
+            s.save()
+        for s in self.schedule_on.all():
+            s.disable_until = s.get_state()['end']
+            s.save()
+        self.perform_action_internal(manually=True)
