@@ -17,10 +17,11 @@ class ScheduleAdmin(admin.ModelAdmin):
     search_fields = ['device']
 
     def room(self, obj):
-        return obj.device.child.room
+        return obj.device.child.room if obj.device else '-'
 
     class Media:
         js = ('schedules/admin/schedule.js',)
         css = {'all': ('schedules/admin/schedule.css',)}
+
 
 admin.site.register(Schedule, ScheduleAdmin)
