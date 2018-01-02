@@ -16,7 +16,7 @@
                             {% if p.room %}
                                 <h6 class="card-subtitle mb-2 text-muted">{{ p.room.name }}</h6>{% endif %}
                             <div class="text-center" role="group">
-                                {% for button in p.buttons.all %}
+                                {% for button in p.buttons.all|dictsort:"name" %}
                                     <a href="javascript:void(0)"
                                        class="btn btn-outline-{{ button.color }} {% if button.manually_active %}active{% endif %}"
                                        style="
