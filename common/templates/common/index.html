@@ -27,6 +27,7 @@
                                        role="button"
                                        onclick="send_command(this, '{% url 'switch' p.pk button.pk %}', '{{ button.color }}')">{{ button.name|safe }}</a>
                                 {% endfor %}
+                                {% if not p.hide_schedule %}
                                 <button type="button"
                                         style="
                                          padding-top: 0.30rem;
@@ -39,13 +40,13 @@
                                         class="btn btn-outline-info"
                                         data-toggle="modal" data-target="#schedule-editor-{{ p.id }}"><i
                                         class="far fa-clock"></i></button>
-
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endif %}
-
+                {% if not p.hide_schedule %}
                 <!-- schedule editor -->
                 <div class="modal fade" id="schedule-editor-{{ p.id }}" tabindex="-1" role="dialog"
                      aria-labelledby="schedule-editor-label-{{ p.id }}" aria-hidden="true">
@@ -84,6 +85,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             {% endfor %}
         </div>
     {% endfor %}

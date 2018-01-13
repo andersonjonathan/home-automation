@@ -57,6 +57,7 @@ class RadioCode(models.Model):
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
     room = models.ForeignKey(Room, null=True, blank=True, related_name='radio')
+    hide_schedule = models.BooleanField(default=False)
     parent = models.OneToOneField(BaseDevice, related_name="radio", parent_link=True)
 
     def __unicode__(self):

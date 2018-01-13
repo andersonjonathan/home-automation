@@ -13,6 +13,7 @@ def send_signals(request):
     """
     example:
     {
+        "payload": "CABBABABAABABBABABAABABABBAABABBABABAABBAABABBAABBAABABBAABBABABAD",
         "signals": [
             {
                 "char": "A",
@@ -21,18 +22,22 @@ def send_signals(request):
             },
             {
                 "char": "B",
-                "on": 2,
-                "off": 2
+                "on": 1,
+                "off": 5
             },
             {
                 "char": "C",
-                "on": 3,
-                "off": 3
+                "on": 1,
+                "off": 10
+            }
+            {
+                "char": "D",
+                "on": 1,
+                "off": 40
             }
         ],
-        "gpio": 5,
-        "protocol_time": 0.01,
-        "payload": "AAABBBCCCAAA",
+        "gpio": 4,
+        "protocol_time": 0.00025,
         "rounds": 10
     }
     """

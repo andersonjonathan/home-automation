@@ -10,6 +10,7 @@ class Device(BaseDevice):
     name = models.CharField(max_length=255)
     room = models.ForeignKey(Room, null=True, blank=True, related_name='wired')
     gpio = models.IntegerField(help_text="GPIO port", unique=True)
+    hide_schedule = models.BooleanField(default=False)
     parent = models.OneToOneField(BaseDevice, related_name="wired", parent_link=True)
 
     def __unicode__(self):
