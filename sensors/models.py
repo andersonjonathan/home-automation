@@ -4,7 +4,7 @@ from django.db import models
 from utils import read_retry, read_capacitor, w1_read_temp, read_capacitor_raw, read_mcp, thermistor_table_lookup
 
 
-class Readings(models.Model):
+class Reading(models.Model):
     identity = models.CharField(max_length=254)
     timestamp = models.DateTimeField(auto_now_add=True)
     value = models.FloatField()

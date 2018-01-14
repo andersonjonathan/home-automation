@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from sensors.models import DHT11, CapacitorDevice, W1Therm, MCP3008Channel, Readings
+from sensors.models import DHT11, CapacitorDevice, W1Therm, MCP3008Channel, Reading
 
 
 class Command(BaseCommand):
@@ -13,19 +13,19 @@ class Command(BaseCommand):
             device.last_humidity = hum
             device.save()
             if device.save_temperature:
-                Readings(identity="DHT11-{}-temp".format(device.pk), value=temp).save()
+                Reading(identity="DHT11-{}-temp".format(device.pk), value=temp).save()
             if device.save_humidity:
-                Readings(identity="DHT11-{}-hum".format(device.pk), value=hum).save()
+                Reading(identity="DHT11-{}-hum".format(device.pk), value=hum).save()
         for device in CapacitorDevice.objects.all():
             value = device.value
             device.last_value = value
             device.save()
             if device.save_value:
-                Readings(identity="CapacitorDevice-{}".format(device.pk), value=value).save()
+                Reading(identity="CapacitorDevice-{}".format(device.pk), value=value).save()
         for device in W1Therm.objects.all():
             if device.save_temperature:
-                Readings(identity="W1Therm-{}".format(device.pk), value=device.temperature).save()
+                Reading(identity="W1Therm-{}".format(device.pk), value=device.temperature).save()
         for device in MCP3008Channel.objects.all():
             if device.save_value:
-                Readings(identity="MCP3008Channel-{}".format(device.pk), value=device.value).save()
+                Reading(identity="MCP3008Channel-{}".format(device.pk), value=device.value).save()
 
