@@ -143,6 +143,7 @@ class NetworkSensor(models.Model):
     decimals = models.IntegerField(default=2, help_text="Number of decimals to show")
     unit = models.CharField(max_length=254, null=True, blank=True)
     response_parameter = models.CharField(max_length=254, null=True, blank=True)
+    save_value = models.BooleanField(default=False)
 
     @property
     def value(self):

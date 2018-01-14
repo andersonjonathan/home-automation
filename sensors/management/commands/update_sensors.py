@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from sensors.models import DHT11, CapacitorDevice, W1Therm, MCP3008Channel, Reading
+from sensors.models import DHT11, CapacitorDevice, W1Therm, MCP3008Channel, Reading, NetworkSensor
 
 
 class Command(BaseCommand):
@@ -28,4 +28,6 @@ class Command(BaseCommand):
         for device in MCP3008Channel.objects.all():
             if device.save_value:
                 Reading(identity="MCP3008Channel-{}".format(device.pk), value=device.value).save()
-
+        for device in NetworkSensor.objects.all():
+            if device.save_value:
+                Reading(identity="NetworkSensor-{}".format(device.pk), value=device.value).save()
