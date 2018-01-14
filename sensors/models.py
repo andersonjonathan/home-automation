@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+import requests
 from django.db import models
 from utils import read_retry, read_capacitor, w1_read_temp, read_capacitor_raw, read_mcp, thermistor_table_lookup
 
@@ -125,3 +125,61 @@ class MCP3008Channel(models.Model):
     def __unicode__(self):
         return '{name}'.format(name=self.name)
 
+
+class NetworkSensor(models.Model):
+    name = models.CharField(max_length=255)
+    url = models.CharField(max_length=511)
+    post_body = models.TextField(blank=True, null=True)
+    content_type = models.CharField(default="application/json", max_length=255, blank=True, null=True)
+    method = models.CharField(max_length=10, choices=(
+        ("post", "POST"),
+        ("get", "GET"),))
+    user = models.CharField(max_length=255, blank=True, null=True)
+    password = models.CharField(max_length=255, blank=True, null=True)
+    decimals = models.IntegerField(default=2, help_text="Number of decimals to show")
+    unit = models.CharField(max_length=254, null=True, blank=True)
+    response_parameter = models.CharField(max_length=254, null=True, blank=True)
+
+    @property
+    def value(self):
+        if self.method == 'post':
+            auth = None
+            headers = {
+                'cache-control': "no-cache",
+            }
+            if self.user:
+                auth = (self.user, self.password)
+            if self.content_type:
+                headers['content-type'] = self.content_type
+            res = requests.post(
+                self.url,
+                data=self.post_body,
+                headers=headers,
+                auth=auth
+            )
+            if self.response_parameter:
+                return res.json()[self.response_parameter]
+            else:
+                return res.text
+        elif self.method == 'get':
+            auth = None
+            if self.user:
+                auth = (self.user, self.password)
+            res = requests.get(
+                self.url,
+                headers={
+                    'cache-control': "no-cache",
+                },
+                auth=auth
+            )
+            if self.response_parameter:
+                return res.json()[self.response_parameter]
+            else:
+                return res.text
+
+    @property
+    def formatted_value(self):
+        return '{:.{prec}f}{unit}'.format(self.value, prec=self.decimals, unit=self.unit)
+
+    def __unicode__(self):
+        return '{name}'.format(name=self.name)

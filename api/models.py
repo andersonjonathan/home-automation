@@ -28,7 +28,7 @@ class Button(BaseButton):
     ), default="btn-default")
     url = models.CharField(max_length=511)
     post_body = models.TextField(blank=True, null=True)
-    content_type = models.CharField(max_length=255, blank=True, null=True)
+    content_type = models.CharField(default="application/json", max_length=255, blank=True, null=True)
     method = models.CharField(max_length=10, choices=(
         ("post", "POST"),
         ("get", "GET"),))

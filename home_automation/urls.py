@@ -4,7 +4,7 @@ from common.views import login, index, switch, room
 from django.contrib.auth.views import logout
 
 from schedules.views import buttons
-from sensors.views import sensors
+from sensors.views import sensors, dht11
 from radio.views import send_signals
 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^accounts/login/$', login, {'template_name': 'common/login.html'}),
     url(r'^accounts/logout/$', logout),
     url(r'^api/radio/transmit', view=send_signals),
+    url(r'^api/dht11', view=dht11)
 ]
