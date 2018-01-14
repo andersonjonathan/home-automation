@@ -25,11 +25,15 @@ class DHT11(models.Model):
 
     @property
     def temperature(self):
-        return self.read_retry[1]
+        first = float(self.read_retry[1])
+        second = float(self.read_retry[1])
+        return (first+second)/2.0
 
     @property
     def humidity(self):
-        return self.read_retry[0]
+        first = float(self.read_retry[0])
+        second = float(self.read_retry[0])
+        return (first+second)/2.0
 
     @property
     def read_retry(self):
