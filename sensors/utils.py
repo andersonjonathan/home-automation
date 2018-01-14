@@ -7,7 +7,7 @@ try:
 except ImportError:
     from common.RPiMock import GPIO
 try:
-    import Adafruit_MCP3008 as Adafruit_MCP3008
+    import Adafruit_MCP3008
 except ImportError:
     from common.RPiMock import Adafruit_MCP3008
 import os
@@ -141,9 +141,9 @@ def thermistor_table_lookup(resistance):
 
     last = None
     for p in res_table:
-        if not last:
-            return 200
         if p[0] > resistance:
+            if not last:
+                return 200
             percent_p = (resistance - last[0]) / (p[0] - last[0])
             return percent_p * p[1] + (1 - percent_p) * last[1]
         else:
