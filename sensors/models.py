@@ -6,7 +6,7 @@ from utils import read_retry, read_capacitor, w1_read_temp, read_capacitor_raw, 
 
 class Readings(models.Model):
     identity = models.CharField(max_length=254)
-    timestamp = models.DateTimeField(auto_created=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     value = models.FloatField()
 
     def __unicode__(self):
