@@ -1,6 +1,6 @@
 from django import template
 
-from ..models import DHT11, CapacitorDevice, W1Therm, MCP3008Channel
+from ..models import DHT11, CapacitorDevice, W1Therm, MCP3008Channel, NetworkSensor
 
 register = template.Library()
 
@@ -23,3 +23,7 @@ def get_w1_devices():
 @register.assignment_tag()
 def get_mcp3008_devices():
     return MCP3008Channel.objects.all()
+
+@register.assignment_tag()
+def get_network_devices():
+    return NetworkSensor.objects.all()

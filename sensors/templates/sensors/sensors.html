@@ -45,4 +45,13 @@
             </div>
         </div>
     {% endfor %}
+    {% get_network_devices as devices %}
+    {% for t in devices %}
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">{{ t.name }}</h3></div>
+            <div class="panel-body">
+                {{ t.value }}{{ t.unit }} <br>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
