@@ -1,13 +1,29 @@
 {% extends 'common/master.html' %}
-{% load thermometer %}
+{% load sensors %}
 {% block content %}
+    {% get_mcp3008_devices as devices %}
+    {% for t in devices %}
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">{{ t.name }}</h3></div>
+            <div class="panel-body">
+                {{ t.formatted_value }} <br>
+            </div>
+        </div>
+    {% endfor %}
     {% get_thermometers as thermometers %}
     {% for t in thermometers %}
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">{{ t.name }}</h3></div>
             <div class="panel-body">
-                Temperature: {% get_temperature t %}°C <br>
-                Humidity: {% get_humidity t %}%
+                {% if t.show_temperature %}
+                Temperature: {{ t.last_temperature }}°C
+                {% endif %}
+                {% if t.show_temperature and t.show_humidity %}
+                <br>
+                {% endif %}
+                {% if t.show_humidity %}
+                Humidity: {{ t.last_humidity }}%
+                {% endif %}
             </div>
         </div>
     {% endfor %}
@@ -16,7 +32,7 @@
         <div class="panel panel-default">
             <div class="panel-heading"><h3 class="panel-title">{{ t.name }}</h3></div>
             <div class="panel-body">
-                {% get_capacitor_device_value_int t %}{{ t.unit }} <br>
+                {{ t.last_value }}{{ t.unit }} <br>
             </div>
         </div>
     {% endfor %}

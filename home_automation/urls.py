@@ -4,13 +4,13 @@ from common.views import login, index, switch, room
 from django.contrib.auth.views import logout
 
 from schedules.views import buttons
-from thermometer.views import thermometers
+from sensors.views import sensors
 from radio.views import send_signals
 
 urlpatterns = [
     url(r'^$', view=index, name="index"),
     url(r'^buttons/(?P<device_pk>[0-9]+)$', view=buttons, name="buttons"),
-    url(r'^thermometers/$', view=thermometers, name="thermometers"),
+    url(r'^sensors/$', view=sensors, name="sensors"),
     url(r'^room/(?P<room_name>[^/]+)/$', view=room, name="room"),
     url(r'^api/switch/(?P<pk>[0-9]+)/(?P<button_pk>[^/]+)/$', view=switch, name="switch"),
     url(r'^admin/', include(admin.site.urls)),

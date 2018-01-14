@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'radio',
     'schedules',
     'wired',
-    'thermometer',
+    'sensors',
     'api',
     'rest_framework',
 )
