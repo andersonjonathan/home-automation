@@ -27,6 +27,8 @@ class BaseDevice(models.Model):
             return self.kodi
         if hasattr(self, 'api'):
             return self.api
+        if hasattr(self, 'system'):
+            return self.system
 
     def has_auto(self):
         pass
@@ -48,6 +50,8 @@ class BaseButton(models.Model):
             return self.kodi
         if hasattr(self, 'api'):
             return self.api
+        if hasattr(self, 'system'):
+            return self.system
 
     def __unicode__(self):
         return self.child.__unicode__()

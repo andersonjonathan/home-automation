@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'wired',
     'sensors',
     'api',
+    'system',
     'rest_framework',
 )
 
