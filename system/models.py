@@ -35,7 +35,7 @@ class Button(BaseButton):
         return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def perform_action_internal(self):
-        call(self.call)
+        call([self.call])
 
     def perform_action(self):
         self.perform_action_internal()
