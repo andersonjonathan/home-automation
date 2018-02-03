@@ -12,6 +12,13 @@ class Reading(models.Model):
     def __unicode__(self):
         return '{name} {ts}'.format(name=self.identity, ts=self.timestamp)
 
+    def device(self):
+        if 'NetworkSensor-' in self.identity:
+            return NetworkSensor.objects.get(pk=self.identity[14:])
+        if 'MCP3008Channel-' in self.identity:
+            return MCP3008Channel.objects.get(pk=self.identity[15:])
+
+
 
 class DHT11(models.Model):
     name = models.CharField(max_length=254)

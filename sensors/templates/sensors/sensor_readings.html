@@ -1,0 +1,111 @@
+{% extends 'common/master.html' %}
+{% load l10n %}
+
+{% load sensors %}
+{% block content %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/0.6.3/chartjs-plugin-zoom.min.js"></script>
+
+        <canvas id="canvas" style="width:100%; height: 80vh"></canvas>
+    <script>
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+        var config = {
+            type: 'line',
+            data: {
+                //labels,
+                datasets: [
+                {% for readings in sensors %}
+                    {
+                    label: "{{ readings.name }}",
+                    borderColor: getRandomColor(),
+                    data: [
+                        {% for reading in readings.readings %}
+                            { t:'{{ reading.timestamp|date:"c" }}', y: {{ reading.value|unlocalize }} },
+                        {% endfor %}
+                    ],
+                    fill: false
+                },
+                {% endfor %}
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Sensor values'
+                },
+                animation: false,
+                scaleShowVerticalLines: false,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            tooltipFormat: 'YYYY-MM-DD HH:mm',
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            maxRotation: 80,
+                            minRotation: 80,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [
+                        {
+                            type: 'linear',
+                            display: true,
+                            gridLines: {
+                                display: false,
+                            },
+                            labels: {
+                                show: true,
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Value'
+                            }
+                        }
+                    ],
+                },
+
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+
+                pan: {
+                    enabled: true,
+                    mode: 'x',
+                },
+                zoom: {
+                    enabled: true,
+                    drag: false,
+                    mode: 'x',
+                    limits: {
+                        max: 10,
+                        min: 0.5,
+                    },
+                }
+            }
+        };
+        window.onload = function () {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myLine = new Chart(ctx, config);
+        };
+    </script>
+{% endblock %}

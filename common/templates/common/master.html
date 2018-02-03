@@ -40,6 +40,11 @@
                     {% endfor %}
                 </ul>
                 <ul class="navbar-nav navbar-right">
+                    {% get_urls as urls %}
+                    {% for url in urls %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url.url }}">{{ url.name }}</a></li>
+                    {% endfor %}
                     <li class="nav-item {% if current_page == 'Sensors' %}active{% endif %}">
                         <a class="nav-link" href="{% url "sensors" %}">Sensors</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url "admin:index" %}">Admin</a></li>

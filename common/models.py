@@ -58,3 +58,10 @@ class BaseButton(models.Model):
     def perform_action(self):
         raise NotImplementedError("Please Implement this method")
 
+
+class Url(models.Model):
+    url = models.TextField()
+    name = models.TextField()
+
+    def __unicode__(self):
+        return self.name
