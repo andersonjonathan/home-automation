@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from subprocess import call
+import os
 
 from django.db import models
 
@@ -35,7 +35,7 @@ class Button(BaseButton):
         return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def perform_action_internal(self):
-        call([self.call])
+        os.system(self.call)
 
     def perform_action(self):
         self.perform_action_internal()
