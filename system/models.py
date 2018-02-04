@@ -10,6 +10,7 @@ from common.models import BaseDevice, BaseButton, Room
 class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
     room = models.ForeignKey(Room, null=True, blank=True, related_name='system')
+    hide_schedule = models.BooleanField(default=False)
     parent = models.OneToOneField(BaseDevice, related_name="system", parent_link=True)
 
     def __unicode__(self):
@@ -28,14 +29,29 @@ class Button(BaseButton):
         ("warning", "Orange"),
         ("danger", "Red"),
     ), default="default")
-
+    active = models.BooleanField(default=False)
+    manually_active = models.BooleanField(default=False)
     parent = models.OneToOneField(BaseButton, related_name="system", parent_link=True)
 
     def __unicode__(self):
         return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
-    def perform_action_internal(self):
+    def perform_action_internal(self, manually=False):
+        self.active = True
+        self.manually_active = manually
+        for b in self.device.buttons.all():
+            if b.name != self.name:
+                b.active = False
+                b.manually_active = False
+                b.save()
+        self.save()
         os.system(self.call)
 
     def perform_action(self):
-        self.perform_action_internal()
+        for s in self.schedule_off.all():
+            s.disable_until = s.get_state()['end']
+            s.save()
+        for s in self.schedule_on.all():
+            s.disable_until = s.get_state()['end']
+            s.save()
+        self.perform_action_internal(manually=True)
