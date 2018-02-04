@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 
 from datetime import time, timedelta
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -10,16 +9,16 @@ from schedules.sun import sun
 
 
 class Schedule(models.Model):
-    device = models.ForeignKey(BaseDevice, related_name="schedule", null=True, blank=False)
+    device = models.ForeignKey(BaseDevice, related_name="schedule", null=True, blank=False, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
-    on = models.ForeignKey(BaseButton, related_name="schedule_on", null=True, blank=True)
-    off = models.ForeignKey(BaseButton, related_name="schedule_off", null=True, blank=True)
+    on = models.ForeignKey(BaseButton, related_name="schedule_on", null=True, blank=True, on_delete=models.CASCADE)
+    off = models.ForeignKey(BaseButton, related_name="schedule_off", null=True, blank=True, on_delete=models.CASCADE)
     repeat_signal = models.BooleanField(default=False)
     disable_until = models.DateTimeField(null=True, blank=True)
     last_action = models.BooleanField(default=True)  # True = on, False = off
 
-    def __unicode__(self):
-        return unicode(self.device)
+    def __str__(self):
+        return str(self.device)
 
     def get_state(self, now=None):
         if not now:
@@ -57,7 +56,7 @@ class Schedule(models.Model):
                 weekday_map[(weekday + 1) % 7]: True
             }), key=lambda t: t.start_time)
             if tomorrows_slots:
-                off_end = timezone.datetime.combine(now.date()+timedelta(days=1), tomorrows_slots[0].start_time)
+                off_end = timezone.datetime.combine(now.date( ) +timedelta(days=1), tomorrows_slots[0].start_time)
             else:
                 off_end = timezone.datetime.combine(now.date(), time(23, 59, 59))
         return {
@@ -131,12 +130,12 @@ class ScheduleSlot(models.Model):
     saturday = models.BooleanField(default=True)
     sunday = models.BooleanField(default=True)
 
-    schedule = models.ForeignKey(Schedule)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
 
     @property
     def start_time(self):
         if self.start_mode == self.TIME:
-            return time(int(abs(self.start)), int((abs(self.start)-int(abs(self.start)))*60))
+            return time(int(abs(self.start)), int((abs(self.start) - int(abs(self.start))) *60))
         elif self.start_mode == self.SUN_UP:
             sunrise = sun(58.41, 15.57).sunrise()
             hour = max(0.0, min(sunrise.hour + (sunrise.minute / 60.0) + self.start, 23.99))
@@ -149,7 +148,7 @@ class ScheduleSlot(models.Model):
     @property
     def end_time(self):
         if self.end_mode == self.TIME:
-            return time(int(abs(self.end)), int((abs(self.end)-int(abs(self.end)))*60))
+            return time(int(abs(self.end)), int((abs(self.end) - int(abs(self.end))) *60))
         elif self.end_mode == self.SUN_UP:
             sunrise = sun(58.41, 15.57).sunrise()
             hour = max(0.0, min(sunrise.hour + (sunrise.minute / 60.0) + self.end, 23.99))
@@ -213,7 +212,7 @@ class ScheduleSlot(models.Model):
             start=start_setting, end=end_setting
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return '{settings}, [{days}], '.format(
             settings=self.current_setting,
             days=self.days,

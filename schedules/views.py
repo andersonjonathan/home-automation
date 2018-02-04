@@ -11,6 +11,6 @@ def buttons(request, device_pk):
     for b in device.buttons.all():
         btns.append({
             'optionValue': b.pk,
-            'optionDisplay': unicode(b)
+            'optionDisplay': str(b)
         })
     return JsonResponse({'status': 'ok', 'buttons': btns})

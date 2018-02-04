@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from subprocess import call
 
@@ -12,13 +12,13 @@ class Config(models.Model):
     remote = models.CharField(max_length=255)
     key = models.CharField(max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name} [{remote}]'.format(name=self.name, remote=self.remote)
 
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
-    parent = models.OneToOneField(BaseDevice, related_name="infrared", parent_link=True)
+    parent = models.OneToOneField(BaseDevice, related_name="infrared", parent_link=True, on_delete=models.CASCADE)
 
     def button_grid(self):
         btns = self.buttons.all().order_by('row', 'priority')
@@ -37,14 +37,14 @@ class Device(BaseDevice):
         res.append(row)
         return res
 
-    def __unicode__(self):
-        return u'{name}'.format(name=self.name)
+    def __str__(self):
+        return '{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
     name = models.CharField(max_length=255)
-    config = models.ForeignKey(Config, related_name='buttons')
-    device = models.ForeignKey(Device, related_name='buttons')
+    config = models.ForeignKey(Config, related_name='buttons', on_delete=models.CASCADE)
+    device = models.ForeignKey(Device, related_name='buttons', on_delete=models.CASCADE)
     count = models.IntegerField(default=2)
     color = models.CharField(max_length=255, choices=(
         ("btn-default", "White"),
@@ -56,9 +56,9 @@ class Button(BaseButton):
     ), default="btn-default")
     row = models.IntegerField(default=0)
     priority = models.IntegerField(default=0)
-    parent = models.OneToOneField(BaseButton, related_name="infrared", parent_link=True)
+    parent = models.OneToOneField(BaseButton, related_name="infrared", parent_link=True, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def perform_action_internal(self):

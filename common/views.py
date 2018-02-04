@@ -24,7 +24,9 @@ from django.http import JsonResponse
 
 @login_required
 def index(request):
-    plugs = sorted(list(RadioDevice.objects.all()) + list(WiredDevice.objects.all()) + list(ApiDevice.objects.all()) + list(SystemDevice.objects.all()), key=lambda x: (x.room is None, x.room.name if x.room else None))
+    plugs = sorted(list(RadioDevice.objects.all()) + list(WiredDevice.objects.all()) +
+                   list(ApiDevice.objects.all()) + list(SystemDevice.objects.all()),
+                   key=lambda x: (x.room is None, x.room.name if x.room else None))
     context = {'current_page': 'Devices',
                'remotes': list(IRDevice.objects.all()) + list(KodiDevice.objects.all()),
                'plugs': plugs}

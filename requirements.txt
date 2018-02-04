@@ -1,6 +1,6 @@
-django>=1.11.0,<1.11.99
+django>=2.0.0,<2.0.99
 django-flat-responsive
-djangorestframework==3.3
+djangorestframework
 pytz
 requests
 adafruit-DHT
