@@ -3,7 +3,9 @@ django-flat-responsive
 djangorestframework
 pytz
 requests
-adafruit-DHT
+# adafruit-DHT
 adafruit-mcp3008
 RPi.GPIO
 dj-static
+django-oauth-toolkit
+django-cors-middleware

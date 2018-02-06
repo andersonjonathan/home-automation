@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'api',
     'system',
     'rest_framework',
+    'oauth2_provider',
+    'corsheaders',
 )
 
 MIDDLEWARE = (
@@ -58,7 +60,10 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
+
+CORS_ORIGIN_ALLOW_ALL = True  # TODO: This is a security issue, use only for development.
 
 ROOT_URLCONF = 'home_automation.urls'
 
