@@ -18,6 +18,7 @@ from kodi.models import Device as KodiDevice
 from radio.models import Device as RadioDevice
 from system.models import Device as SystemDevice
 from wired.models import Device as WiredDevice
+from tradfri.models import Device as TradfriDevice
 
 from django.http import JsonResponse
 
@@ -25,7 +26,7 @@ from django.http import JsonResponse
 @login_required
 def index(request):
     plugs = sorted(list(RadioDevice.objects.all()) + list(WiredDevice.objects.all()) +
-                   list(ApiDevice.objects.all()) + list(SystemDevice.objects.all()),
+                   list(ApiDevice.objects.all()) + list(SystemDevice.objects.all()) + list(TradfriDevice.objects.all()),
                    key=lambda x: (x.room is None, x.room.name if x.room else None))
     context = {'current_page': 'Devices',
                'remotes': list(IRDevice.objects.all()) + list(KodiDevice.objects.all()),
@@ -41,7 +42,8 @@ def room(request, room_name):
                'plugs': list(RadioDevice.objects.filter(room__name=room_name)) +
                         list(WiredDevice.objects.filter(room__name=room_name)) +
                         list(ApiDevice.objects.filter(room__name=room_name)) +
-                        list(SystemDevice.objects.filter(room__name=room_name))}
+                        list(SystemDevice.objects.filter(room__name=room_name)) +
+                        list(TradfriDevice.objects.filter(room__name=room_name))}
     return render(request, 'common/index.html', context)
 
 

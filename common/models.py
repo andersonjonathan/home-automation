@@ -27,6 +27,8 @@ class BaseDevice(models.Model):
             return self.api
         if hasattr(self, 'system'):
             return self.system
+        if hasattr(self, 'tradfri'):
+            return self.tradfri
 
     def has_auto(self):
         pass
@@ -50,6 +52,8 @@ class BaseButton(models.Model):
             return self.api
         if hasattr(self, 'system'):
             return self.system
+        if hasattr(self, 'tradfri'):
+            return self.tradfri
 
     def __str__(self):
         return self.child.__str__()
