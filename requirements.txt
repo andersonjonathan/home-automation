@@ -10,3 +10,4 @@ pytradfri
 dj-static
 django-oauth-toolkit
 django-cors-middleware
+django-sslserver
