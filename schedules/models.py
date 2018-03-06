@@ -89,7 +89,7 @@ class Schedule(models.Model):
         slot = self.get_state()
         if slot['state'] == 'on' and (self.repeat_signal or (not self.last_action)):
             self._turn_on()
-        elif self.repeat_signal or self.last_action:
+        elif slot['state'] != 'on' and (self.repeat_signal or self.last_action):
             self._turn_off()
 
 
