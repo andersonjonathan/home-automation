@@ -2,6 +2,7 @@ class MCP3008:
     def __init__(self, *args, **kwargs):
         pass
 
-    def read_adc(self, pos):
+    @staticmethod
+    def read_adc(pos):
         print(pos)
         return 100

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import requests
 from django.db import models
 
@@ -12,7 +10,7 @@ class Device(BaseDevice):
     port = models.CharField(max_length=16)
     user = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
-    parent = models.OneToOneField(BaseDevice, related_name="kodi", parent_link=True)
+    parent = models.OneToOneField(BaseDevice, related_name="kodi", parent_link=True, on_delete=models.CASCADE)
 
     def button_grid(self):
         btns = self.buttons.all().order_by('row', 'priority')
@@ -31,12 +29,12 @@ class Device(BaseDevice):
         res.append(row)
         return res
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}'.format(name=self.name)
 
 
 class Button(BaseButton):
-    device = models.ForeignKey(Device, related_name='buttons')
+    device = models.ForeignKey(Device, related_name='buttons', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     method = models.CharField(max_length=255)
     color = models.CharField(max_length=255, choices=(
@@ -49,13 +47,13 @@ class Button(BaseButton):
     ), default="btn-default")
     row = models.IntegerField(default=0)
     priority = models.IntegerField(default=0)
-    parent = models.OneToOneField(BaseButton, related_name="kodi", parent_link=True)
+    parent = models.OneToOneField(BaseButton, related_name="kodi", parent_link=True, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('name', 'device'),)
         ordering = ["row", "priority"]
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name} [{kodi}]'.format(name=self.name, kodi=self.device.name)
 
     def perform_action_internal(self, *args, **kwargs):

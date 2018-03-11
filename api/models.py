@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import requests
 from django.db import models
 
@@ -8,15 +6,15 @@ from common.models import BaseDevice, BaseButton, Room
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255, unique=True)
-    room = models.ForeignKey(Room, null=True, blank=True, related_name='api')
-    parent = models.OneToOneField(BaseDevice, related_name="api", parent_link=True)
+    room = models.ForeignKey(Room, null=True, blank=True, related_name='api', on_delete=models.CASCADE)
+    parent = models.OneToOneField(BaseDevice, related_name="api", parent_link=True, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}{room}'.format(name=self.name, room=', ' + self.room.name if self.room else '')
 
 
 class Button(BaseButton):
-    device = models.ForeignKey(Device, related_name='buttons')
+    device = models.ForeignKey(Device, related_name='buttons', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     color = models.CharField(max_length=255, choices=(
         ("default", "White"),
@@ -34,14 +32,14 @@ class Button(BaseButton):
         ("get", "GET"),))
     user = models.CharField(max_length=255, blank=True, null=True)
     password = models.CharField(max_length=255, blank=True, null=True)
-    parent = models.OneToOneField(BaseButton, related_name="api", parent_link=True)
+    parent = models.OneToOneField(BaseButton, related_name="api", parent_link=True, on_delete=models.CASCADE)
     active = models.BooleanField(default=False)
     manually_active = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (('name', 'device'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}'.format(name=self.name)
 
     def perform_action_internal(self, manually=False):

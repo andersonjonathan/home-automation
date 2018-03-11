@@ -16,4 +16,5 @@ class DeviceAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     search_fields = ['name']
 
+
 admin.site.register(Device, DeviceAdmin)

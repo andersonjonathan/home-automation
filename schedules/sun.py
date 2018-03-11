@@ -105,7 +105,7 @@ class sun:
         obliq = Mobliq + 0.00256 * cos(rad(125.04 - 1934.136 * Jcent))
         vary = tan(rad(obliq / 2)) * tan(rad(obliq / 2))
         Seqcent = sin(rad(Manom)) * (1.914602 - Jcent * (0.004817 + 0.000014 * Jcent)) + sin(rad(2 * Manom)) * (
-        0.019993 - 0.000101 * Jcent) + sin(rad(3 * Manom)) * 0.000289
+            0.019993 - 0.000101 * Jcent) + sin(rad(3 * Manom)) * 0.000289
         Struelong = Mlong + Seqcent
         Sapplong = Struelong - 0.00569 - 0.00478 * sin(rad(125.04 - 1934.136 * Jcent))
         declination = deg(asin(sin(rad(obliq)) * sin(rad(Sapplong))))

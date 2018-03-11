@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from django.db import models
 
@@ -11,7 +11,7 @@ class RadioTransmitter(models.Model):
     name = models.CharField(max_length=255)
     gpio = models.CharField(max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}'.format(name=self.name)
 
 
@@ -19,12 +19,12 @@ class RadioProtocol(models.Model):
     name = models.CharField(max_length=255)
     time = models.FloatField(help_text="Period time t in seconds")
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}'.format(name=self.name)
 
 
 class RadioSignal(models.Model):
-    protocol = models.ForeignKey(RadioProtocol)
+    protocol = models.ForeignKey(RadioProtocol, on_delete=models.CASCADE)
     char = models.CharField(max_length=1)
     on = models.IntegerField(help_text="Nr of periods on")
     off = models.IntegerField(help_text="Nr of periods off")
@@ -32,7 +32,7 @@ class RadioSignal(models.Model):
     class Meta:
         unique_together = (('protocol', 'char'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{protocol} [{char}] [ON: {on}, OFF: {off}]'.format(
             protocol=self.protocol, char=self.char, on=self.on, off=self.off)
 
@@ -40,8 +40,8 @@ class RadioSignal(models.Model):
 class RadioCode(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     payload = models.CharField(max_length=255)
-    transmitter = models.ForeignKey(RadioTransmitter, blank=False, null=True)
-    protocol = models.ForeignKey(RadioProtocol)
+    transmitter = models.ForeignKey(RadioTransmitter, blank=False, null=True, on_delete=models.CASCADE)
+    protocol = models.ForeignKey(RadioProtocol, on_delete=models.CASCADE)
     
     def signals(self):
         return list(self.protocol.radiosignal_set.all())
@@ -49,25 +49,25 @@ class RadioCode(models.Model):
     def time(self):
         return self.protocol.time
 
-    def __unicode__(self):
+    def __str__(self):
         return '{protocol} - {name} [{transmitter}]'.format(
             protocol=self.protocol, name=self.name, transmitter=self.transmitter)
 
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
-    room = models.ForeignKey(Room, null=True, blank=True, related_name='radio')
+    room = models.ForeignKey(Room, null=True, blank=True, related_name='radio', on_delete=models.CASCADE)
     hide_schedule = models.BooleanField(default=False)
-    parent = models.OneToOneField(BaseDevice, related_name="radio", parent_link=True)
+    parent = models.OneToOneField(BaseDevice, related_name="radio", parent_link=True, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}{room}'.format(name=self.name, room=', ' + self.room.name if self.room else '')
 
 
 class Button(BaseButton):
     name = models.CharField(max_length=255)
-    radio_code = models.ForeignKey(RadioCode, related_name='buttons')
-    device = models.ForeignKey(Device, related_name='buttons')
+    radio_code = models.ForeignKey(RadioCode, related_name='buttons', on_delete=models.CASCADE)
+    device = models.ForeignKey(Device, related_name='buttons', on_delete=models.CASCADE)
     rounds = models.IntegerField(default=10)
     color = models.CharField(max_length=255, choices=(
         ("default", "White"),
@@ -80,13 +80,13 @@ class Button(BaseButton):
     priority = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
     manually_active = models.BooleanField(default=False)
-    parent = models.OneToOneField(BaseButton, related_name="radio", parent_link=True)
+    parent = models.OneToOneField(BaseButton, related_name="radio", parent_link=True, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('name', 'device'),)
         ordering = ["priority"]
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name} [{device}]'.format(name=self.name, device=self.device.name)
 
     def _format_payload(self, str_payload):

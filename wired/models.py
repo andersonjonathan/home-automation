@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 from django.db import models
 
@@ -8,19 +8,19 @@ from .utils import set_state
 
 class Device(BaseDevice):
     name = models.CharField(max_length=255)
-    room = models.ForeignKey(Room, null=True, blank=True, related_name='wired')
+    room = models.ForeignKey(Room, null=True, blank=True, related_name='wired', on_delete=models.CASCADE)
     gpio = models.IntegerField(help_text="GPIO port", unique=True)
     hide_schedule = models.BooleanField(default=False)
-    parent = models.OneToOneField(BaseDevice, related_name="wired", parent_link=True)
+    parent = models.OneToOneField(BaseDevice, related_name="wired", parent_link=True, on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}{room}'.format(name=self.name, room=', ' + self.room.name if self.room else '')
 
 
 class Button(BaseButton):
     payload = models.CharField(max_length=1, choices=(("0", "0"), ("1", "1")))
     name = models.CharField(max_length=255)
-    device = models.ForeignKey(Device, related_name='buttons')
+    device = models.ForeignKey(Device, related_name='buttons', on_delete=models.CASCADE)
     color = models.CharField(max_length=255, choices=(
         ("default", "White"),
         ("primary", "Blue"),
@@ -32,7 +32,7 @@ class Button(BaseButton):
     priority = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
     manually_active = models.BooleanField(default=False)
-    parent = models.OneToOneField(BaseButton, related_name="wired", parent_link=True)
+    parent = models.OneToOneField(BaseButton, related_name="wired", parent_link=True, on_delete=models.CASCADE)
 
     def perform_action_internal(self, manually=False):
         self.active = True
@@ -54,5 +54,5 @@ class Button(BaseButton):
             s.save()
         self.perform_action_internal(manually=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{name}'.format(name=self.name)

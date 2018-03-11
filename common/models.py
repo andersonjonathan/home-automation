@@ -1,13 +1,11 @@
-from __future__ import unicode_literals
-
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 class Room(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -29,12 +27,14 @@ class BaseDevice(models.Model):
             return self.api
         if hasattr(self, 'system'):
             return self.system
+        if hasattr(self, 'tradfri'):
+            return self.tradfri
 
     def has_auto(self):
         pass
 
-    def __unicode__(self):
-        return self.child.__unicode__()
+    def __str__(self):
+        return self.child.__str__()
 
 
 class BaseButton(models.Model):
@@ -52,9 +52,11 @@ class BaseButton(models.Model):
             return self.api
         if hasattr(self, 'system'):
             return self.system
+        if hasattr(self, 'tradfri'):
+            return self.tradfri
 
-    def __unicode__(self):
-        return self.child.__unicode__()
+    def __str__(self):
+        return self.child.__str__()
 
     def perform_action_internal(self):
         raise NotImplementedError("Please Implement this method")
@@ -67,5 +69,5 @@ class Url(models.Model):
     url = models.TextField()
     name = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name

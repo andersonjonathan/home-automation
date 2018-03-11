@@ -1,9 +1,13 @@
-django>=1.11.0,<1.11.99
+django>=2.0.0,<2.0.99
 django-flat-responsive
-djangorestframework==3.3
+djangorestframework
 pytz
-requests
-adafruit-DHT
+requests>=2.18.4
+# adafruit-DHT
 adafruit-mcp3008
 RPi.GPIO
+typing
+pytradfri
 dj-static
+django-oauth-toolkit
+django-cors-middleware

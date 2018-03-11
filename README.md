@@ -31,3 +31,8 @@ Put the following in:
 ```
 
 Install https://github.com/adafruit/Adafruit_Python_DHT
+
+```
+sudo apt-get install autoconf automake libtool
+sudo bash install-coap-client.sh
+```

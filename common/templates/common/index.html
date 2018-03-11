@@ -15,10 +15,10 @@
 
                             {% if p.room %}
                                 <h6 class="card-subtitle mb-2 text-muted">{{ p.room.name }}</h6>{% endif %}
-                            <div class="text-center" role="group">
+                            <div class="text-center d-flex flex-wrap" role="group">
                                 {% for button in p.buttons.all|dictsort:"name" %}
                                     <a href="javascript:void(0)"
-                                       class="btn btn-outline-{{ button.color }} {% if button.manually_active %}active{% endif %}"
+                                       class="order-{{ button.priority }} btn btn-outline-{{ button.color }} {% if button.manually_active %}active{% endif %}"
                                        style="
                                         padding-top: 0.30rem;
                                         padding-right: 0.6rem;
@@ -38,7 +38,7 @@
                                          margin: 0.30rem 0;
                                          {% if not p.schedule.all or not p.schedule.all.0.active %}opacity: 0.3;{% endif %}
                                          "
-                                        class="btn btn-outline-info"
+                                        class="btn btn-outline-info order-12"
                                         data-toggle="modal" data-target="#schedule-editor-{{ p.id }}"><i
                                         class="far fa-clock"></i></button>
                                 {% endif %}
@@ -159,7 +159,7 @@
                 <div class="card w-100 border border-primary">
                     <div class="card-body" style="padding: 0.5rem;">
                         <h4 class="card-title">{{ t.name }}</h4>
-                        <h6 class="card-subtitle mb-2 text-muted" text-center>{{ t.temperature }}{{ t.unit }}</h6>
+                        <h6 class="card-subtitle mb-2 text-muted text-center" >{{ t.temperature }}{{ t.unit }}</h6>
                     </div>
                 </div>
             </div>

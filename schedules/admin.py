@@ -16,7 +16,8 @@ class ScheduleAdmin(admin.ModelAdmin):
     list_display_links = ('device',)
     search_fields = ['device']
 
-    def room(self, obj):
+    @staticmethod
+    def room(obj):
         return obj.device.child.room if obj.device else '-'
 
     class Media:
