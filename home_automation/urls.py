@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
-from common.views import login, index, switch, room
+from common.views import login, index, switch, room, ApiEndpoint
 from django.contrib.auth.views import logout
 from schedules.views import buttons
 from sensors.views import sensors, sensor_readings, dht11
@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/radio/transmit', view=send_signals),
     path('api/dht11', view=dht11),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    path('api/hello', ApiEndpoint.as_view()),
 ]

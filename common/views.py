@@ -20,8 +20,8 @@ from system.models import Device as SystemDevice
 from wired.models import Device as WiredDevice
 from tradfri.models import Device as TradfriDevice
 
-from django.http import JsonResponse
-
+from django.http import JsonResponse, HttpResponse
+from oauth2_provider.views.generic import ProtectedResourceView
 
 @login_required
 def index(request):
@@ -99,3 +99,8 @@ def login(request, template_name='registration/login.html',
         context.update(extra_context)
 
     return TemplateResponse(request, template_name, context)
+
+
+class ApiEndpoint(ProtectedResourceView):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('Hello, OAuth2!')
