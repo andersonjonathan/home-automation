@@ -7,6 +7,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, resolve_url
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
+from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
@@ -22,6 +23,7 @@ from tradfri.models import Device as TradfriDevice
 
 from django.http import JsonResponse, HttpResponse
 from oauth2_provider.views.generic import ProtectedResourceView
+import json
 
 @login_required
 def index(request):
@@ -101,6 +103,36 @@ def login(request, template_name='registration/login.html',
     return TemplateResponse(request, template_name, context)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ApiEndpoint(ProtectedResourceView):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, OAuth2!')
+    def post(self, request, *args, **kwargs):
+
+        try:
+            body = json.loads(request.body.decode("utf-8"))
+            input = body['inputs'][0]
+            intent = input['intent']
+            request_id = body['requestId']
+        except:
+            return JsonResponse({
+                'payload': {
+                    'errorCode': 'protocolError'
+                }
+            })
+        payload = {}
+        # user_id = str(request.resource_owner.id)
+        if intent == "action.devices.SYNC":
+            payload['devices'] = []
+        elif intent == "action.devices.QUERY":
+            pass
+        elif intent == "action.devices.EXECUTE":
+            pass
+        else:
+            payload = {
+                "errorCode": "protocolError"
+            }
+
+        response = {
+            'requestId': request_id,
+            'payload': payload,
+        }
+        return JsonResponse(response)

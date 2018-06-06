@@ -20,5 +20,5 @@ urlpatterns = [
     path('api/radio/transmit', view=send_signals),
     path('api/dht11', view=dht11),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path('api/hello', ApiEndpoint.as_view()),
+    path('api/intents', ApiEndpoint.as_view()),
 ]
