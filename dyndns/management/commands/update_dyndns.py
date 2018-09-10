@@ -15,14 +15,14 @@ class Command(BaseCommand):
                 uri='https://api.loopia.se/RPCSERV',
                 encoding='utf-8')
 
-            a_records = get_records(client, config)
-            new_ip = get_ip()
+            records = get_records(client, config)
+            new_ip = get_ip(config.type)
 
-            if len(a_records) == 0:
+            if len(records) == 0:
                 status = '{status}. Added new record.'.format(
                         status=add_record(client, config, new_ip))
-            elif a_records[0]['rdata'] != new_ip:
-                status = update_record(client, config, new_ip, a_records[0])
+            elif records[0]['rdata'] != new_ip:
+                status = update_record(client, config, new_ip, records[0])
             else:
                 status = "No change"
 
@@ -39,10 +39,14 @@ class Command(BaseCommand):
             print("ip: {}; {}".format(new_ip, res))
 
 
-def get_ip():
+def get_ip(config_type):
     """Get public IP adress"""
-    result = urllib.request.urlopen('http://dyndns.loopia.se/checkip').read()
-    return re.search('[0-9.]+', str(result)).group(0)
+    if config_type == 'A':
+        result = urllib.request.urlopen('http://dyndns.loopia.se/checkip').read()
+        return re.search('[0-9.]+', str(result)).group(0)
+    elif config_type == 'AAAA':
+        result = urllib.request.urlopen('ifconfig.co').read()
+        return str(result)
 
 
 def get_records(client, config):
@@ -52,7 +56,7 @@ def get_records(client, config):
         config.password,
         config.domain,
         config.subdomain)
-    return [d for d in zone_records if d['type'] == 'A']
+    return [d for d in zone_records if d['type'] == config.type]
 
 
 def add_record(client, config, ip):
@@ -65,13 +69,13 @@ def add_record(client, config, ip):
         {
             'priority': '',
             'rdata': ip,
-            'type': 'A',
+            'type': config.type,
             'ttl': config.ttl
         })
 
 
 def update_record(client, config, ip, record):
-    """Update current A record"""
+    """Update current record"""
     return client.updateZoneRecord(
         config.username,
         config.password,
