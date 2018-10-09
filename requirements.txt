@@ -8,6 +8,5 @@ adafruit-mcp3008
 RPi.GPIO
 typing
 pytradfri
-dj-static
 django-oauth-toolkit
 django-cors-middleware

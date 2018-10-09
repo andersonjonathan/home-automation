@@ -1,5 +1,7 @@
-import glob
+#!/usr/bin/env python3
+
 import wave
+import argparse
 
 
 def parse_wav_file(file_name):
@@ -59,7 +61,13 @@ def parse_wav_file(file_name):
     print("".join(tmp).split(chr(char+len(s_types)-1))[1]+chr(char+len(s_types)-1))
 
 
-file_list = sorted(glob.glob("/home/jonathan/Desktop/Stugan 433/*.wav"))
-for file in file_list:
-    parse_wav_file(file)
-    print("")
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process waw files to transmission codes.')
+    parser.add_argument('files', metavar='N', type=str, nargs='+',
+                        help='file for the decoder')
+    args = parser.parse_args()
+
+    file_list = sorted(args.files)
+    for file in file_list:
+        parse_wav_file(file)
+        print("")

@@ -60,3 +60,6 @@ docs/_build/
 target/
 /libcoap/
 venv/
+
+
+/tradfri_standalone_psk.conf

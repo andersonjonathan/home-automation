@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+import argparse
 from random import randint
 
 
@@ -37,4 +40,9 @@ def generate_telldus_code(c_s="C", c_0="BA", c_1="AB", c_p="D", nexa=False):
 
 
 if __name__ == '__main__':
-    print(generate_telldus_code(nexa=True))
+    parser = argparse.ArgumentParser(description='Generate telldus (or nexa) codes')
+    parser.add_argument(
+        '--nexa', dest='nexa', default=False, action='store_true', help='generate nexa code instead of telldus')
+    args = parser.parse_args()
+
+    print(generate_telldus_code(nexa=args.nexa))
