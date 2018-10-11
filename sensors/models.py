@@ -185,7 +185,10 @@ class NetworkSensor(models.Model):
                 auth=auth
             )
             if self.response_parameter:
-                return res.json()[self.response_parameter]
+                try:
+                    return res.json()[self.response_parameter]
+                except KeyError:
+                    return res.text
             else:
                 return res.text
 

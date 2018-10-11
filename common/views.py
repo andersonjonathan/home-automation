@@ -21,6 +21,12 @@ from system.models import Device as SystemDevice
 from wired.models import Device as WiredDevice
 from tradfri.models import Device as TradfriDevice
 
+from google_smart_home.models import \
+    Device as GoogleDevice,\
+    Trait,\
+    NickName,\
+    OnOff
+
 from django.http import JsonResponse, HttpResponse
 from oauth2_provider.views.generic import ProtectedResourceView
 import json
@@ -119,12 +125,63 @@ class ApiEndpoint(ProtectedResourceView):
                 }
             })
         payload = {}
-        # user_id = str(request.resource_owner.id)
         if intent == "action.devices.SYNC":
-            payload['devices'] = []
+            devices = GoogleDevice.objects.all()
+            payload['devices'] = [device.as_dict() for device in devices]
         elif intent == "action.devices.QUERY":
-            pass
+            try:
+                payload['devices'] = dict([
+                    (device['id'], GoogleDevice.objects.get(pk=device['id']).get_status()) for device in input['payload']['devices']])
+
+            except GoogleDevice.DoesNotExist:
+                return JsonResponse({
+                    'payload': {
+                        'errorCode': 'deviceNotFound'
+                    }
+                })
+
         elif intent == "action.devices.EXECUTE":
+            errors = []
+            success = []
+            try:
+                commands = input['payload']['commands']
+                for command in commands:
+                    executions = command['execution']
+                    for device in command['devices']:
+                        try:
+                            googleDevice = GoogleDevice.objects.get(pk=device['id'])
+                            for e in executions:
+                                if e['command'] == 'action.devices.commands.OnOff':
+                                    if e['params']['on']:
+                                        try:
+                                            googleDevice.onoff.on.child.perform_action()
+                                            success.append(device['id'])
+                                        except:
+                                            errors.append(device['id'])
+                                    else:
+                                        try:
+                                            googleDevice.onoff.off.child.perform_action()
+                                            success.append(device['id'])
+                                        except:
+                                            errors.append(device['id'])
+                        except GoogleDevice.DoesNotExist:
+                            return JsonResponse({
+                                'payload': {
+                                    'errorCode': 'deviceNotFound'
+                                }
+                            })
+            except KeyError as err:
+                return JsonResponse({
+                    'payload': {
+                        'errorCode': 'deviceNotFound'
+                    }
+                })
+            payload['commands'] = []
+            if success:
+                payload['commands'].append({ 'ids': success, 'status': 'SUCCESS' })
+            if errors:
+                payload['commands'].append({ 'ids': errors, 'status': 'ERROR' })
+        elif intent == "action.devices.DISCONNECT":
             pass
         else:
             payload = {

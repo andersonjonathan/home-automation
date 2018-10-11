@@ -1,0 +1,7 @@
+Snow - 6500 K
+Ivory - 6100 K
+Daylight / "White" - 5000 K
+Cool white - 4000 K
+Warm white / Soft white - 3000 K
+Incandescent - 2700 K
+Candlelight - 2000 K
