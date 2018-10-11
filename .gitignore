@@ -63,3 +63,4 @@ venv/
 
 
 /tradfri_standalone_psk.conf
+/config.ini

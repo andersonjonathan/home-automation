@@ -3,9 +3,6 @@ django-flat-responsive
 djangorestframework
 pytz
 requests>=2.18.4
-# adafruit-DHT
-adafruit-mcp3008
-RPi.GPIO
 typing
 pytradfri
 django-oauth-toolkit

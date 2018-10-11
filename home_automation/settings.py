@@ -12,21 +12,24 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-
+import configparser
+from shutil import copy
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+config = configparser.ConfigParser(allow_no_value=True, delimiters=('=',))
+if not os.path.isfile(os.path.join(BASE_DIR, 'config.ini')):
+    copy(os.path.join(BASE_DIR, 'config.ini.template'), os.path.join(BASE_DIR, 'config.ini'))
+config.read('config.ini')
+general_settings = config['GENERAL']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2%i1cxi!o)h)ia2!)ipghoxx*el4m**4c)00&8r)!+#zjj(whn'
+SECRET_KEY = general_settings['SecretKey']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = general_settings['Debug'] == 'true'
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [key for key in config['AllowedHosts']]
 
 # Application definition
 
@@ -52,6 +55,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'tradfri',
     'dyndns',
+    'google_smart_home',
 )
 
 MIDDLEWARE = (

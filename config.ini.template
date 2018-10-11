@@ -1,0 +1,8 @@
+[GENERAL]
+Debug = true
+SecretKey = 2%%i1cxi!o)h)ia2!)ipghoxx*el4m**4c)00&8r)!+#zjj(whn
+
+[AllowedHosts]
+127.0.0.1
+localhost
+0.0.0.0

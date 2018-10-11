@@ -47,6 +47,7 @@ sudo chown :www-data -R .
 sudo chmod 775 venv/ -R
 ./venv/bin/activate
 ./venv/bin/pip3 install -r requirements.txt
+./venv/bin/pip install -r requirements_rpi.txt
 sudo bash install-coap-client.sh
 python3 manage.py collectstatic
 python3 manage.py migrate
