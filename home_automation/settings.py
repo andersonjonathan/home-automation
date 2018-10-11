@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config = configparser.ConfigParser(allow_no_value=True, delimiters=('=',))
 if not os.path.isfile(os.path.join(BASE_DIR, 'config.ini')):
     copy(os.path.join(BASE_DIR, 'config.ini.template'), os.path.join(BASE_DIR, 'config.ini'))
-config.read('config.ini')
+config.read(os.path.join(BASE_DIR, 'config.ini'))
 general_settings = config['GENERAL']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
