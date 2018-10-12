@@ -281,6 +281,7 @@ sudo nano /etc/apache2/sites-available/default-ssl.conf
 	WSGIDaemonProcess homectrl python-path=/home/pi/home-automation python-home=/home/pi/home-automation/venv
 	WSGIProcessGroup homectrl
 	WSGIScriptAlias / /home/pi/home-automation/home_automation/wsgi.py
+	WSGIPassAuthorization On
 
 Include /etc/letsencrypt/options-ssl-apache.conf
 SSLCertificateFile /etc/letsencrypt/live/domain.com/fullchain.pem
@@ -301,6 +302,6 @@ sudo crontab -e
 */5 * * * * /home/pi/home-automation/venv/bin/python3 /home/pi/home-automation/manage.py checkschedule
 */5 * * * * /home/pi/home-automation/venv/bin/python3 /home/pi/home-automation/manage.py update_sensors
 7 */2 * * * /home/pi/home-automation/venv/bin/python3 /home/pi/home-automation/manage.py update_dyndns
-0 1 1 */2 * cd /usr/local/letsenctypt && ./letsencrypt-auto certonly --apache --renew-by-default --apache -d domain.com -d www.domain.com >> /var/log/bjorkdala.se-renew.log 2>&1
+0 1 1 */2 * cd /usr/local/letsenctypt && ./letsencrypt-auto certonly --apache --renew-by-default --apache -d domain.com -d www.domain.com >> /var/log/domain.com-renew.log 2>&1
 
 ```
